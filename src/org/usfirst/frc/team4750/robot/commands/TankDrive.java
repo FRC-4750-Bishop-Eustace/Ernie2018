@@ -8,25 +8,30 @@
 package org.usfirst.frc.team4750.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+
+import org.usfirst.frc.team4750.robot.OI;
 import org.usfirst.frc.team4750.robot.Robot;
 
 /**
- * An example command.  You can replace me with your own command.
+ * An example command. You can replace me with your own command.
  */
-public class ExampleCommand extends Command {
-	public ExampleCommand() {
+public class TankDrive extends Command {
+	public TankDrive() {
 		// Use requires() here to declare subsystem dependencies
-		requires(Robot.kExampleSubsystem);
+		requires(Robot.driveTrain);
 	}
 
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
+		requires(Robot.driveTrain);
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
+		// Call controller drive and pass in the joysticks
+		Robot.driveTrain.controllerDrive(OI.leftDriveStick, OI.rightDriveStick);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
