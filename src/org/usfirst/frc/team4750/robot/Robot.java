@@ -8,6 +8,7 @@
 package org.usfirst.frc.team4750.robot;
 
 import org.usfirst.frc.team4750.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team4750.robot.subsystems.Encoders;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -28,6 +29,12 @@ public class Robot extends TimedRobot {
 			RobotMap.FRONT_RIGHT_MOTOR_ID, RobotMap.LEFT_MOTOR_ID, RobotMap.RIGHT_MOTOR_ID,
 			RobotMap.BACK_LEFT_MOTOR_ID, RobotMap.BACK_RIGHT_MOTOR_ID);
 
+	
+	
+	
+	
+	public static final Encoders encoders = new Encoders();
+	
 	public static OI m_oi;
 
 	Command m_autonomousCommand;
