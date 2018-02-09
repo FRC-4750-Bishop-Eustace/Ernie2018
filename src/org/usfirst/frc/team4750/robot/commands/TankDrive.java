@@ -30,8 +30,13 @@ public class TankDrive extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		// Call controller drive and pass in the joysticks
-		Robot.driveTrain.controllerDrive(OI.leftDriveStick, OI.rightDriveStick);
+		if(OI.leftDriveStick.getRawButton(2)) {
+			// Call dual joystick drive and pass in both joysticks
+			Robot.driveTrain.dualDrive(OI.leftDriveStick, OI.rightDriveStick);
+		}else {
+			// Call single joystick drive and pass in the right joystick
+			Robot.driveTrain.singleDrive(OI.rightDriveStick);
+		}
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

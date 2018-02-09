@@ -9,6 +9,7 @@ package org.usfirst.frc.team4750.robot;
 
 import org.usfirst.frc.team4750.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team4750.robot.subsystems.IMU;
+import org.usfirst.frc.team4750.robot.subsystems.Ultrasonics;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -26,10 +27,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends TimedRobot {
 
 	public static final DriveTrain driveTrain = new DriveTrain(RobotMap.FRONT_LEFT_MOTOR_ID,
-			RobotMap.FRONT_RIGHT_MOTOR_ID, RobotMap.LEFT_MOTOR_ID, RobotMap.RIGHT_MOTOR_ID,
-			RobotMap.BACK_LEFT_MOTOR_ID, RobotMap.BACK_RIGHT_MOTOR_ID);
-	
+			RobotMap.FRONT_RIGHT_MOTOR_ID, RobotMap.LEFT_MOTOR_ID, RobotMap.RIGHT_MOTOR_ID, RobotMap.BACK_LEFT_MOTOR_ID,
+			RobotMap.BACK_RIGHT_MOTOR_ID);
+
 	public static final IMU imu = new IMU();
+
+	public static final Ultrasonics ultrasonic = new Ultrasonics();
 
 	public static OI m_oi;
 
@@ -117,6 +120,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		SmartDashboard.putNumber("Z axis", ((OI.rightDriveStick.getZ() - 1) / -2));
 	}
 
 	/**

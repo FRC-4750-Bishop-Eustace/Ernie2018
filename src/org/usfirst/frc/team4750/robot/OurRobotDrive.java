@@ -4,8 +4,6 @@ import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 public class OurRobotDrive extends DifferentialDrive {
-	
-	double constant = 0.1;
 
 	public OurRobotDrive(SpeedController leftMotor, SpeedController rightMotor) {
 		super(leftMotor, rightMotor);
@@ -15,10 +13,12 @@ public class OurRobotDrive extends DifferentialDrive {
 		super.tankDrive(cube(leftSpeed), cube(rightSpeed));
 	}
 	
+	public void arcadeDrive(double forwardSpeed, double turnSpeed) {
+		super.arcadeDrive(cube(forwardSpeed), cube(turnSpeed));
+	}
 	
 	private double cube(double value) {
-		return (value * constant) + (1 - constant) * (value * value * value);
-		
+		return value * ((OI.rightDriveStick.getZ() - 1) / -2);		
 	}
 	
 }
