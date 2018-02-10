@@ -7,7 +7,9 @@
 
 package org.usfirst.frc.team4750.robot;
 
+
 import org.usfirst.frc.team4750.robot.commands.ControlledTurn;
+import org.usfirst.frc.team4750.robot.commands.EncoderDrive;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -21,11 +23,13 @@ public class OI {
 	// Joysticks
 	public static Joystick leftDriveStick = new Joystick(RobotMap.LEFT_JOYSTICK_PORT);
 	public static Joystick rightDriveStick = new Joystick(RobotMap.RIGHT_JOYSTICK_PORT);
-	
+
+	Button driveButton = new JoystickButton(leftDriveStick, 2);
 	Button turnLeftButton = new JoystickButton(leftDriveStick, 3);
 	Button turnRightButton = new JoystickButton(rightDriveStick, 4);
 	
 	public OI() {
+		driveButton.whenReleased(new EncoderDrive(144));
 		turnLeftButton.whenReleased(new ControlledTurn(-90));
 		turnRightButton.whenReleased(new ControlledTurn(90));
 	}

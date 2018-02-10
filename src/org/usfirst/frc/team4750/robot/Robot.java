@@ -7,9 +7,11 @@
 
 package org.usfirst.frc.team4750.robot;
 
+import org.usfirst.frc.team4750.robot.commands.EncoderReset;
 import org.usfirst.frc.team4750.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team4750.robot.subsystems.IMU;
 import org.usfirst.frc.team4750.robot.subsystems.Ultrasonics;
+import org.usfirst.frc.team4750.robot.subsystems.Encoders;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -34,10 +36,17 @@ public class Robot extends TimedRobot {
 
 	public static final Ultrasonics ultrasonic = new Ultrasonics();
 
+	
+	
+	
+	
+	public static final Encoders encoders = new Encoders();
+	
 	public static OI m_oi;
 
 	Command m_autonomousCommand;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
+	Command reset;
 
 	/**
 	 * This function is run when the robot is first started up and should be used
@@ -46,9 +55,13 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotInit() {
 		m_oi = new OI();
+		reset = new EncoderReset();
 		// m_chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", m_chooser);
+		encoders.resetLeftEncoder();
+		encoders.resetRightEncoder();
+		SmartDashboard.putData("Reset Encoders", reset);
 	}
 
 	/**

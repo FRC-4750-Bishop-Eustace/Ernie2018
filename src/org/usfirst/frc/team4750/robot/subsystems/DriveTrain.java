@@ -8,11 +8,13 @@
 package org.usfirst.frc.team4750.robot.subsystems;
 
 import org.usfirst.frc.team4750.robot.OurRobotDrive;
+import org.usfirst.frc.team4750.robot.Robot;
 import org.usfirst.frc.team4750.robot.commands.TankDrive;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -32,6 +34,8 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 
 	// Robot drive
 	OurRobotDrive robotDrive;
+	
+	double ramp = 2;
 
 	// PID Output
 	double output;
@@ -46,6 +50,14 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 		rightMotor = new WPI_TalonSRX(rightMotorPort);
 		backLeftMotor = new WPI_TalonSRX(backLeftMotorPort);
 		backRightMotor = new WPI_TalonSRX(backRightMotorPort);
+		
+		// Configure velocity ramping
+		frontLeftMotor.configOpenloopRamp(ramp, 100);
+		frontRightMotor.configOpenloopRamp(ramp, 100);
+		leftMotor.configOpenloopRamp(ramp, 100);
+		rightMotor.configOpenloopRamp(ramp, 100);
+		backLeftMotor.configOpenloopRamp(ramp, 100);
+		backRightMotor.configOpenloopRamp(ramp, 100);
 
 		// Initialize controller groups
 		leftMotors = new SpeedControllerGroup(frontLeftMotor, leftMotor, backLeftMotor);
@@ -68,10 +80,19 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 		// Throttle (twist on joystick) = rotate speed
 		robotDrive.arcadeDrive(-j.getY(), j.getThrottle());
 	}
+	
+	public void setDriveSpeed(double speed) {
+		robotDrive.arcadeDrive(speed, 0);
+	}
 
 	// Turn with PID
 	public void pidTurn() {
 		robotDrive.tankDrive(output, -output);
+	}
+	
+	// Drive with PID
+	public void pidDrive() {
+		robotDrive.arcadeDrive(output, 0);	
 	}
 
 	// Stop all motors
