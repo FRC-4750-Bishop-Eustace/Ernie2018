@@ -7,7 +7,11 @@
 
 package org.usfirst.frc.team4750.robot;
 
+import org.usfirst.frc.team4750.robot.commands.EncoderDrive;
+
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -17,4 +21,10 @@ public class OI {
 	// Joysticks
 	public static Joystick leftDriveStick = new Joystick(RobotMap.LEFT_JOYSTICK_PORT);
 	public static Joystick rightDriveStick = new Joystick(RobotMap.RIGHT_JOYSTICK_PORT);
+	
+	Button button = new JoystickButton(leftDriveStick, 2);
+	
+	public OI() {
+		button.whenReleased(new EncoderDrive(144));
+	}
 }
