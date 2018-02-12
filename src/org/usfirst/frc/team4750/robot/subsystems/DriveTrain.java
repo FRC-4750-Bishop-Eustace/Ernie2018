@@ -18,13 +18,12 @@ import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * An example subsystem. You can replace me with your own Subsystem.
  */
 public class DriveTrain extends Subsystem implements PIDOutput {
-	// Put methods for controlling this subsystem
-	// here. Call these from Commands.
 
 	// Motors
 	WPI_TalonSRX frontLeftMotor, frontRightMotor, leftMotor, rightMotor, backLeftMotor, backRightMotor;
@@ -34,11 +33,24 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 
 	// Robot drive
 	OurRobotDrive robotDrive;
-	
+
+	// Time (s) to ramp motor speeds
 	double ramp = 2;
+
+	// Create PID Controller
+	PIDController straightDriveController;
 
 	// PID Output
 	double output;
+	
+	// PID Values
+	static final double P = 0.01; // 0.03
+	static final double I = 0.003; // 0.003
+	static final double D = 0.05; // 0.05
+	static final double F = 0.0;
+	
+	// Rate to straighten drive train
+	double rotateRate;
 
 	public DriveTrain(int frontLeftMotorPort, int frontRightMotorPort, int leftMotorPort, int rightMotorPort,
 			int backLeftMotorPort, int backRightMotorPort) {
@@ -50,7 +62,7 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 		rightMotor = new WPI_TalonSRX(rightMotorPort);
 		backLeftMotor = new WPI_TalonSRX(backLeftMotorPort);
 		backRightMotor = new WPI_TalonSRX(backRightMotorPort);
-		
+
 		// Configure velocity ramping
 		frontLeftMotor.configOpenloopRamp(ramp, 100);
 		frontRightMotor.configOpenloopRamp(ramp, 100);
@@ -65,6 +77,9 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 
 		// Initialize robot drive
 		robotDrive = new OurRobotDrive(leftMotors, rightMotors);
+		
+		// Initialize PID controller
+		straightDriveController = new PIDController(P, I, D, F, Robot.imu.ahrs, Robot.relay);
 	}
 
 	// Dual joystick drive
@@ -80,19 +95,33 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 		// Throttle (twist on joystick) = rotate speed
 		robotDrive.arcadeDrive(-j.getY(), j.getThrottle());
 	}
-	
+
+	// Drive forward at a certain speed
 	public void setDriveSpeed(double speed) {
 		robotDrive.arcadeDrive(speed, 0);
+		System.out.println("running");
 	}
 
 	// Turn with PID
 	public void pidTurn() {
 		robotDrive.tankDrive(output, -output);
 	}
-	
+
 	// Drive with PID
 	public void pidDrive() {
-		robotDrive.arcadeDrive(output, 0);	
+		if(!straightDriveController.isEnabled()) {
+			straightDriveController.setSetpoint(Robot.imu.ahrs.getYaw());
+			rotateRate = 0;
+			straightDriveController.enable();
+		}
+		
+		double leftSpeed = output + rotateRate;
+		double rightSpeed = output - rotateRate;
+		
+		SmartDashboard.putNumber("Left Speed", leftSpeed);
+		SmartDashboard.putNumber("Right Speed", rightSpeed);
+		
+		robotDrive.tankDrive(leftSpeed, rightSpeed);
 	}
 
 	// Stop all motors
@@ -104,6 +133,12 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 	@Override
 	public void pidWrite(double output) {
 		this.output = output;
+		SmartDashboard.putNumber("Encoder PID", output);
+	}
+	
+	public void pidStraightWrite(double output) {
+		this.rotateRate = output;
+		SmartDashboard.putNumber("Adjust PID", output);
 	}
 
 	// Set the default command for a subsystem here. This will be called whenever

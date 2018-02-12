@@ -61,7 +61,7 @@ public class IMU extends Subsystem implements PIDSource {
 	@Override
 	public PIDSourceType getPIDSourceType() {
 		// TODO Auto-generated method stub
-		return null;
+		return PIDSourceType.kRate;
 	}
 
 	@Override

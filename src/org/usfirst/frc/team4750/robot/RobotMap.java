@@ -28,8 +28,8 @@ public class RobotMap {
 	public static final int BACK_RIGHT_MOTOR_ID = 6;
 	
 	// Digital (DIO) Ports
-	public static final int ULTRASONIC_A = 0;
-	public static final int ULTRASONIC_B = 1;
+	public static final int ULTRASONIC_TRIGGER = 1;
+	public static final int ULTRASONIC_ECHO = 0;
 	public static final int LEFT_ENCODER_A = 5;
 	public static final int LEFT_ENCODER_B = 6;
 	public static final int RIGHT_ENCODER_A = 7;

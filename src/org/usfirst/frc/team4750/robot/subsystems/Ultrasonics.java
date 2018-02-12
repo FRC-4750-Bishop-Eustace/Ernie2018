@@ -16,7 +16,7 @@ public class Ultrasonics extends Subsystem {
 	
 	public Ultrasonics() {
 		// Create an ultrasonic sensor with pingChannel = trigger, echoChannel = echo
-		ultrasonic = new Ultrasonic(RobotMap.ULTRASONIC_A, RobotMap.ULTRASONIC_B);
+		ultrasonic = new Ultrasonic(RobotMap.ULTRASONIC_TRIGGER, RobotMap.ULTRASONIC_ECHO);
 		// Automatically send and receive pulses
 		ultrasonic.setAutomaticMode(true);
 	}

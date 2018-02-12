@@ -27,18 +27,18 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * project.
  */
 public class Robot extends TimedRobot {
+	
+	public static final AveragePIDSource pidSource = new AveragePIDSource();
 
+	public static final PIDRelay relay = new PIDRelay();
+	
+	public static final IMU imu = new IMU();
+	
 	public static final DriveTrain driveTrain = new DriveTrain(RobotMap.FRONT_LEFT_MOTOR_ID,
 			RobotMap.FRONT_RIGHT_MOTOR_ID, RobotMap.LEFT_MOTOR_ID, RobotMap.RIGHT_MOTOR_ID, RobotMap.BACK_LEFT_MOTOR_ID,
 			RobotMap.BACK_RIGHT_MOTOR_ID);
 
-	public static final IMU imu = new IMU();
-
 	public static final Ultrasonics ultrasonic = new Ultrasonics();
-
-	
-	
-	
 	
 	public static final Encoders encoders = new Encoders();
 	
