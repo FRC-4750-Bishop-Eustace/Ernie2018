@@ -8,8 +8,8 @@
 package org.usfirst.frc.team4750.robot;
 
 
-import org.usfirst.frc.team4750.robot.commands.ControlledTurn;
-import org.usfirst.frc.team4750.robot.commands.EncoderDrive;
+import org.usfirst.frc.team4750.robot.commands.TurnToAngle;
+import org.usfirst.frc.team4750.robot.commands.DriveToDistance;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -31,9 +31,9 @@ public class OI {
 	Button turnRightButton = new JoystickButton(rightDriveStick, 4);
 	
 	public OI() {
-		driveButton.whenReleased(new EncoderDrive(1, true));
-		driveBackButton.whenReleased(new EncoderDrive(-1, true));
-		turnLeftButton.whenReleased(new ControlledTurn(-90));
-		turnRightButton.whenReleased(new ControlledTurn(90));
+		driveButton.whenReleased(new DriveToDistance(1, true));
+		driveBackButton.whenReleased(new DriveToDistance(-1, true));
+		turnLeftButton.whenReleased(new TurnToAngle(-90));
+		turnRightButton.whenReleased(new TurnToAngle(90));
 	}
 }

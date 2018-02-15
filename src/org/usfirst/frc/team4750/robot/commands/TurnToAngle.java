@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  *
  */
-public class ControlledTurn extends Command {
+public class TurnToAngle extends Command {
 
 	// Create PID Controller
 	PIDController turnController;
@@ -30,7 +30,7 @@ public class ControlledTurn extends Command {
 	// Minimum error
 	static final double toleranceDegrees = 2.0;
 
-	public ControlledTurn(float targetHeading) {
+	public TurnToAngle(float targetHeading) {
 		// Get heading
 		this.targetHeading = targetHeading;
 		// Print to SmartDashboard

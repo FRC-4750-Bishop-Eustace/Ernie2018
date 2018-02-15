@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  *
  */
-public class EncoderDrive extends Command {
+public class DriveToDistance extends Command {
 
 	// Create PID Controller
 	PIDController driveController;
@@ -28,7 +28,7 @@ public class EncoderDrive extends Command {
 	// Minimum error
 	static final double tolerance = 1.0;
 
-	public EncoderDrive(float distance, boolean feet) {
+	public DriveToDistance(float distance, boolean feet) {
 		if(!feet) {
 			this.targetDistance = distance;
 			
