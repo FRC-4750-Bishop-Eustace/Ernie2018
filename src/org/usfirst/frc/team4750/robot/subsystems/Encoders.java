@@ -21,7 +21,7 @@ public class Encoders extends Subsystem implements PIDSource {
 	// Variables
 	double WHEEL_RADIUS = 3;
 	double CIRCUMFRENCE = 2 * Math.PI * WHEEL_RADIUS;
-	double PULSES_PER_REVOLUTION = 350.85;
+	double PULSES_PER_REVOLUTION = 356.23;
 	double distancePerPulse = CIRCUMFRENCE / PULSES_PER_REVOLUTION;
 	
 	public Encoders() {

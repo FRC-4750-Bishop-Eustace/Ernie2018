@@ -35,7 +35,7 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 	OurRobotDrive robotDrive;
 
 	// Time (s) to ramp motor speeds
-	double ramp = 2;
+	double ramp = 0;//2;
 
 	// Create PID Controller
 	PIDController straightDriveController;
@@ -62,14 +62,14 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 		rightMotor = new WPI_TalonSRX(rightMotorPort);
 		backLeftMotor = new WPI_TalonSRX(backLeftMotorPort);
 		backRightMotor = new WPI_TalonSRX(backRightMotorPort);
-
+		
 		// Configure velocity ramping
-		frontLeftMotor.configOpenloopRamp(ramp, 100);
-		frontRightMotor.configOpenloopRamp(ramp, 100);
-		leftMotor.configOpenloopRamp(ramp, 100);
-		rightMotor.configOpenloopRamp(ramp, 100);
-		backLeftMotor.configOpenloopRamp(ramp, 100);
-		backRightMotor.configOpenloopRamp(ramp, 100);
+		frontLeftMotor.configOpenloopRamp(ramp, 0);
+		frontRightMotor.configOpenloopRamp(ramp, 0);
+		leftMotor.configOpenloopRamp(ramp, 0);
+		rightMotor.configOpenloopRamp(ramp, 0);
+		backLeftMotor.configOpenloopRamp(ramp, 0);
+		backRightMotor.configOpenloopRamp(ramp, 0);
 
 		// Initialize controller groups
 		leftMotors = new SpeedControllerGroup(frontLeftMotor, leftMotor, backLeftMotor);
@@ -84,12 +84,25 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 
 	// Dual joystick drive
 	public void dualDrive(Joystick l, Joystick r) {
+		if(straightDriveController.isEnabled()) {
+			straightDriveController.disable();
+		}
 		// Set motor speeds to the joystick values (inverted)
 		robotDrive.tankDrive(-l.getY(), -r.getY());
 	}
 
 	// Single joystick drive
 	public void singleDrive(Joystick j) {
+		if(straightDriveController.isEnabled()) {
+			// Configure velocity ramping
+			frontLeftMotor.configOpenloopRamp(0, 0);
+			frontRightMotor.configOpenloopRamp(0, 0);
+			leftMotor.configOpenloopRamp(0, 0);
+			rightMotor.configOpenloopRamp(0, 0);
+			backLeftMotor.configOpenloopRamp(0, 0);
+			backRightMotor.configOpenloopRamp(0, 0);
+			straightDriveController.disable();
+		}
 		// Set motor speeds to the joystick values (inverted)
 		// Y-axis = forward/backward speed
 		// Throttle (twist on joystick) = rotate speed
@@ -98,12 +111,18 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 
 	// Drive forward at a certain speed
 	public void setDriveSpeed(double speed) {
+		if(straightDriveController.isEnabled()) {
+			straightDriveController.disable();
+		}
 		robotDrive.arcadeDrive(speed, 0);
 		System.out.println("running");
 	}
 
 	// Turn with PID
 	public void pidTurn() {
+		if(straightDriveController.isEnabled()) {
+			straightDriveController.disable();
+		}
 		robotDrive.tankDrive(output, -output);
 	}
 
@@ -126,6 +145,9 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 
 	// Stop all motors
 	public void brake() {
+		if(straightDriveController.isEnabled()) {
+			straightDriveController.disable();
+		}
 		robotDrive.tankDrive(0, 0);
 	}
 

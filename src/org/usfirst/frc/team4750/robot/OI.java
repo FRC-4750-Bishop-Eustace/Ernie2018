@@ -26,11 +26,13 @@ public class OI {
 
 	// Buttons
 	Button driveButton = new JoystickButton(leftDriveStick, 2);
+	Button driveBackButton = new JoystickButton(rightDriveStick, 2);
 	Button turnLeftButton = new JoystickButton(leftDriveStick, 3);
 	Button turnRightButton = new JoystickButton(rightDriveStick, 4);
 	
 	public OI() {
-		driveButton.whenReleased(new EncoderDrive(12, true));
+		driveButton.whenReleased(new EncoderDrive(1, true));
+		driveBackButton.whenReleased(new EncoderDrive(-1, true));
 		turnLeftButton.whenReleased(new ControlledTurn(-90));
 		turnRightButton.whenReleased(new ControlledTurn(90));
 	}

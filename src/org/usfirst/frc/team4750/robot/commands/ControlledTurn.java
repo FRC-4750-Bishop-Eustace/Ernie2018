@@ -22,10 +22,10 @@ public class ControlledTurn extends Command {
 	private static float cumulativeHeading;
 
 	// PID Values
-	static final double P = 0.05; // 0.03
+	static final double P = 0.03; // 0.03
 	static final double I = 0.003; // 0.003
 	static final double D = 0.05; // 0.05
-	static final double F = 0.33;
+	static final double F = 0.6;
 
 	// Minimum error
 	static final double toleranceDegrees = 2.0;
@@ -55,7 +55,7 @@ public class ControlledTurn extends Command {
 		// Min and max angle to turn to
 		turnController.setInputRange(-180.0f, 180.0f);
 		// Max motor speed (0.6)
-		turnController.setOutputRange(-.7, .7);
+		turnController.setOutputRange(-.6, .6);
 		// Max error
 		turnController.setAbsoluteTolerance(toleranceDegrees);
 		turnController.setContinuous(true);

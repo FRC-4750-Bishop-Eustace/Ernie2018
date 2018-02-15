@@ -61,6 +61,7 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putData("Auto mode", m_chooser);
 		encoders.resetLeftEncoder();
 		encoders.resetRightEncoder();
+		imu.reset();
 		SmartDashboard.putData("Reset Encoders", reset);
 	}
 

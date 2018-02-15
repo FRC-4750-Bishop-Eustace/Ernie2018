@@ -20,23 +20,31 @@ public class EncoderDrive extends Command {
 	private boolean isFinished = false;
 
 	// PID Values
-	static final double P = 0.03; // 0.03
-	static final double I = 0.0; // 0.003
-	static final double D = 0.0; // 0.05
+	static final double P = 0.06; // 0.03
+	static double I = 0.0001; // 0.001
+	static final double D = 0.01; // 0.0
 	static final double F = 0.55;
 
 	// Minimum error
-	static final double tolerance = 0.2;
+	static final double tolerance = 1.0;
 
 	public EncoderDrive(float distance, boolean feet) {
 		if(!feet) {
 			this.targetDistance = distance;
+			
+			if(targetDistance > 72) {
+				I = 0.004;
+			}
 			// Print to SmartDashboard
 			SmartDashboard.putNumber("Target Distance (inches)", this.targetDistance);
 		}else {
 			this.targetDistance = distance * 12;
+			
+			if(targetDistance > 6) {
+				I = 0.004;
+			}
 			// Print to SmartDashboard
-			SmartDashboard.putNumber("Target Distance (feet)", this.targetDistance);
+			SmartDashboard.putNumber("Target Distance (feet)", distance);
 		}
 		
 		// Subsystem dependency
@@ -49,7 +57,7 @@ public class EncoderDrive extends Command {
 	protected void initialize() {
 		Robot.encoders.resetEncoders();
 		// Initialize PID controller
-		driveController = new PIDController(P, I, D, F, Robot.pidSource, Robot.driveTrain);
+		driveController = new PIDController(P, I, D, F, Robot.encoders.leftEncoder, Robot.driveTrain);
 		// Max motor speed (0.6)
 		driveController.setOutputRange(-0.6, 0.6);
 		// Max error
