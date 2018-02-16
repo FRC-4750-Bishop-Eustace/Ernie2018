@@ -15,6 +15,7 @@ import org.usfirst.frc.team4750.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team4750.robot.subsystems.Encoders;
 import org.usfirst.frc.team4750.robot.subsystems.IMU;
 import org.usfirst.frc.team4750.robot.subsystems.Ultrasonics;
+import org.usfirst.frc.team4750.robot.subsystems.Limelight;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -43,6 +44,8 @@ public class Robot extends TimedRobot {
 			RobotMap.BACK_RIGHT_MOTOR_ID);
 
 	public static final Ultrasonics ultrasonic = new Ultrasonics();
+	
+	public static final Limelight limelight = new Limelight();
 
 	public static final Encoders encoders = new Encoders();
 
