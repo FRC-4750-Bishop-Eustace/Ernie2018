@@ -8,8 +8,8 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  */
 public class LeftAuton extends CommandGroup {
 
-    public LeftAuton() {
-        addSequential(new DriveToDistance(6, true));
-        addSequential(new TurnToAngle(-90));
-    }
+	public LeftAuton() {
+		addSequential(new DriveToDistance(6, true));
+		addSequential(new TurnToAngle(-90));
+	}
 }

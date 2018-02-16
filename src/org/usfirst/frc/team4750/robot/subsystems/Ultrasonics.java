@@ -14,14 +14,14 @@ public class Ultrasonics extends Subsystem {
 
 	// Sensors
 	Ultrasonic ultrasonic;
-	
+
 	public Ultrasonics() {
 		// Create an ultrasonic sensor with pingChannel = trigger, echoChannel = echo
 		ultrasonic = new Ultrasonic(RobotMap.ULTRASONIC_TRIGGER, RobotMap.ULTRASONIC_ECHO);
 		// Automatically send and receive pulses
 		ultrasonic.setAutomaticMode(true);
 	}
-	
+
 	/**
 	 * Use this to get the range in inches
 	 * 
@@ -30,7 +30,7 @@ public class Ultrasonics extends Subsystem {
 	public double getInches() {
 		return ultrasonic.getRangeInches();
 	}
-	
+
 	/**
 	 * Use this to get the range in feet
 	 * 
@@ -39,9 +39,9 @@ public class Ultrasonics extends Subsystem {
 	public double getFeet() {
 		return ultrasonic.getRangeInches() / 12;
 	}
-	
-    public void initDefaultCommand() {
-    	// Call output command
-    	setDefaultCommand(new UltrasonicOutput());
-    }
+
+	public void initDefaultCommand() {
+		// Call output command
+		setDefaultCommand(new UltrasonicOutput());
+	}
 }

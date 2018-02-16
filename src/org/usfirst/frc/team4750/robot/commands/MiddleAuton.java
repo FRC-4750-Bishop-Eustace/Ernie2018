@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  */
 public class MiddleAuton extends CommandGroup {
 
-    public MiddleAuton() {
-        addSequential(new DriveToDistance(6, true));
-    }
+	public MiddleAuton() {
+		addSequential(new DriveToDistance(6, true));
+	}
 }

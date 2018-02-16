@@ -14,7 +14,7 @@ package org.usfirst.frc.team4750.robot;
  * floating around.
  */
 public class RobotMap {
-	
+
 	// Joystick ports
 	public static final int LEFT_JOYSTICK_PORT = 0;
 	public static final int RIGHT_JOYSTICK_PORT = 1;
@@ -26,7 +26,7 @@ public class RobotMap {
 	public static final int RIGHT_MOTOR_ID = 4;
 	public static final int BACK_LEFT_MOTOR_ID = 5;
 	public static final int BACK_RIGHT_MOTOR_ID = 6;
-	
+
 	// Digital (DIO) Ports
 	public static final int ULTRASONIC_TRIGGER = 1;
 	public static final int ULTRASONIC_ECHO = 0;

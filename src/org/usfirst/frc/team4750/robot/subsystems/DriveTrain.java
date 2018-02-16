@@ -37,7 +37,6 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 
 	// Time (s) to ramp motor speeds
 	double ramp = 0; // 2
-	int rampTimeout = 100;
 
 	// Create PID Controller
 	PIDController syncController;
@@ -66,12 +65,12 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 		backRightMotor = new WPI_TalonSRX(backRightMotorPort);
 
 		// Configure velocity ramping
-		frontLeftMotor.configOpenloopRamp(ramp, rampTimeout);
-		frontRightMotor.configOpenloopRamp(ramp, rampTimeout);
-		leftMotor.configOpenloopRamp(ramp, rampTimeout);
-		rightMotor.configOpenloopRamp(ramp, rampTimeout);
-		backLeftMotor.configOpenloopRamp(ramp, rampTimeout);
-		backRightMotor.configOpenloopRamp(ramp, rampTimeout);
+		frontLeftMotor.configOpenloopRamp(ramp, 0);
+		frontRightMotor.configOpenloopRamp(ramp, 0);
+		leftMotor.configOpenloopRamp(ramp, 0);
+		rightMotor.configOpenloopRamp(ramp, 0);
+		backLeftMotor.configOpenloopRamp(ramp, 0);
+		backRightMotor.configOpenloopRamp(ramp, 0);
 
 		// Initialize controller groups
 		leftMotors = new SpeedControllerGroup(frontLeftMotor, leftMotor, backLeftMotor);
@@ -96,6 +95,13 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 	// Single joystick drive
 	public void singleDrive(Joystick j) {
 		if (syncController.isEnabled()) {
+			// Configure velocity ramping
+			frontLeftMotor.configOpenloopRamp(0, 0);
+			frontRightMotor.configOpenloopRamp(0, 0);
+			leftMotor.configOpenloopRamp(0, 0);
+			rightMotor.configOpenloopRamp(0, 0);
+			backLeftMotor.configOpenloopRamp(0, 0);
+			backRightMotor.configOpenloopRamp(0, 0);
 			syncController.disable();
 		}
 		// Set motor speeds to the joystick values (inverted)
@@ -111,13 +117,13 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 		}
 		robotDrive.arcadeDrive(speed, 0);
 	}
-
-	// Turn at a certain speed
-	public void setTurnSpeed(double speed) {
+	
+	// Turn with PID
+	public void pidTurn() {
 		if (syncController.isEnabled()) {
 			syncController.disable();
 		}
-		robotDrive.arcadeDrive(0, speed);
+		robotDrive.tankDrive(output, -output);
 	}
 
 	// Drive with PID
@@ -142,14 +148,6 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 		robotDrive.tankDrive(leftSpeed, rightSpeed);
 	}
 
-	// Turn with PID
-	public void pidTurn() {
-		if (syncController.isEnabled()) {
-			syncController.disable();
-		}
-		robotDrive.tankDrive(output, -output);
-	}
-
 	// Stop all motors
 	public void brake() {
 		if (syncController.isEnabled()) {
@@ -158,7 +156,8 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 		robotDrive.tankDrive(0, 0);
 	}
 
-	// Set global output variable to the PIDController output (turnController, driveController)
+	// Set global output variable to the PIDController output (turnController,
+	// driveController)
 	@Override
 	public void pidWrite(double output) {
 		this.output = output;

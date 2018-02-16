@@ -17,14 +17,14 @@ public class Encoders extends Subsystem implements PIDSource {
 
 	// Encoders
 	public Encoder leftEncoder;
-	public Encoder rightEncoder;
-	
+	Encoder rightEncoder;
+
 	// Variables
 	double WHEEL_RADIUS = 3;
 	double CIRCUMFRENCE = 2 * Math.PI * WHEEL_RADIUS;
 	double PULSES_PER_REVOLUTION = 356.23;
 	double distancePerPulse = CIRCUMFRENCE / PULSES_PER_REVOLUTION;
-	
+
 	public Encoders() {
 		// Create encoders (channelA, channelB, inverted, encodingType(2x))
 		leftEncoder = new Encoder(RobotMap.LEFT_ENCODER_A, RobotMap.LEFT_ENCODER_B, true, EncodingType.k2X);
@@ -35,6 +35,23 @@ public class Encoders extends Subsystem implements PIDSource {
 	}
 	
 	/**
+	 * Reset methods
+	 * 
+	 */
+	public void resetLeftEncoder() {
+		leftEncoder.reset();
+	}
+
+	public void resetRightEncoder() {
+		rightEncoder.reset();
+	}
+
+	public void resetEncoders() {
+		leftEncoder.reset();
+		rightEncoder.reset();
+	}
+
+	/**
 	 * Get the count of the encoders
 	 * 
 	 * @return pulses of encoders
@@ -42,11 +59,11 @@ public class Encoders extends Subsystem implements PIDSource {
 	public double getLeftCount() {
 		return leftEncoder.get();
 	}
-	
+
 	public double getRightCount() {
 		return rightEncoder.get();
 	}
-	
+
 	/**
 	 * Convert the count of the encoders to inches
 	 * 
@@ -55,11 +72,11 @@ public class Encoders extends Subsystem implements PIDSource {
 	public double getLeftDistanceInches() {
 		return leftEncoder.getDistance();
 	}
-	
+
 	public double getRightDistanceInches() {
 		return rightEncoder.getDistance();
 	}
-	
+
 	/**
 	 * Convert the count of the encoders to feet
 	 * 
@@ -68,40 +85,23 @@ public class Encoders extends Subsystem implements PIDSource {
 	public double getLeftDistanceFeet() {
 		return leftEncoder.getDistance() / 12;
 	}
-	
+
 	public double getRightDistanceFeet() {
 		return rightEncoder.getDistance() / 12;
 	}
-	
-	/**
-	 * Reset methods
-	 * 
-	 */
-	public void resetLeftEncoder() {
-		leftEncoder.reset();
-	}
-	
-	public void resetRightEncoder() {
-		rightEncoder.reset();
-	}
-	
-	public void resetEncoders() {
-		leftEncoder.reset();
-		rightEncoder.reset();
-	}
-	
-    public void initDefaultCommand() {
-    	// Call output command
-    	setDefaultCommand(new EncoderOutput());
-    }
 
-    /**
-     * PIDSource required methods
-     */
+	public void initDefaultCommand() {
+		// Call output command
+		setDefaultCommand(new EncoderOutput());
+	}
+
+	/**
+	 * PIDSource required methods
+	 */
 	@Override
 	public void setPIDSourceType(PIDSourceType pidSource) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -116,4 +116,3 @@ public class Encoders extends Subsystem implements PIDSource {
 		return 0;
 	}
 }
-

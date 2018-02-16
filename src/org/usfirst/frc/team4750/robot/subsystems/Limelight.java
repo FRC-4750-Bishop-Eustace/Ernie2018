@@ -13,8 +13,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- * This class handles the values of the limelight camera
- * 
+ * An example subsystem. You can replace me with your own Subsystem.
  */
 public class Limelight extends Subsystem {
 	
@@ -26,15 +25,9 @@ public class Limelight extends Subsystem {
 	double xOffset, yOffset, area, skew, ledMode, camMode, pipeline;
 
 	public Limelight() {
-		// Get the limelight table from the network table
 		table = NetworkTableInstance.getDefault().getTable("limelight");
 	}
 	
-	/**
-	 * Use this to get if a target is in view
-	 * 
-	 * @return if the target is in view
-	 */
 	public boolean getHasTarget() {
 		double targetD = table.getEntry("tv").getDouble(0);
 		if(targetD == 0) {
@@ -45,76 +38,41 @@ public class Limelight extends Subsystem {
 		return hasTarget;
 	}
 	
-	/**
-	 * Use this to get the x-offset from the target
-	 * 
-	 * @return xOffset from the target
-	 */
 	public double getXOffset() {
 		xOffset = table.getEntry("tx").getDouble(0);
 		return xOffset;
 	}
 	
-	/**
-	 * Use this to get the y-offset from the target
-	 * 
-	 * @return yOffset from the target
-	 */
 	public double getYOffset() {
 		yOffset = table.getEntry("ty").getDouble(0);
 		return yOffset;
 	}
 	
-	/**
-	 * Use this to get the area of the target
-	 * 
-	 * @return area of the target
-	 */
 	public double getArea() {
 		area = table.getEntry("ta").getDouble(0);
 		return area;
 	}
 	
-	/**
-	 * Use this to get the skew of the target
-	 * 
-	 * @return skew of the target
-	 */
 	public double getSkew() {
 		skew = table.getEntry("ts").getDouble(0);
 		return skew;
 	}
 	
-	/**
-	 * Use this to get the current LED mode of the camera
-	 * 
-	 * @return 0 = on, 1 = off, 2 = blink
-	 */
 	public double getLEDMode() {
-		ledMode = table.getEntry("ledMode").getDouble(0);
+		ledMode = table.getEntry("ledMode").getDouble(1);
 		return ledMode;
 	}
 	
-	/**
-	 * Use this to get the current mode of the camera
-	 * 
-	 * @return 0 = thresholded, 1 = raw image
-	 */
 	public double getCamMode() {
 		camMode = table.getEntry("camMode").getDouble(0);
 		return camMode;
 	}
-	/**
-	 * Use this to get the current pipeline number
-	 * 
-	 * @return number of pipeline 0-9
-	 */
+	
 	public double getPipeline() {
 		pipeline = table.getEntry("pipeline").getDouble(0);
 		return pipeline;
 	}
 	
-	// Cycle LED modes, set to off if blinking
 	public void switchLED() {
 		if(getLEDMode() == 0) {
 			table.getEntry("ledMode").setDouble(1);
@@ -128,7 +86,6 @@ public class Limelight extends Subsystem {
 		}
 	}
 	
-	// Cycle camera modes
 	public void switchCamera() {
 		if(getCamMode() == 0) {
 			table.getEntry("camMode").setDouble(1);
@@ -139,10 +96,9 @@ public class Limelight extends Subsystem {
 		}
 	}
 	
-	// Change to a specific pipeline
 	public void setPipeline(double pipeline) {
 		table.getEntry("pipeline").setDouble(pipeline);
-		SmartDashboard.putNumber("Pipeline", pipeline);
+		SmartDashboard.putNumber("Camera Mode", pipeline);
 	}
 	
 	public void initDefaultCommand() {

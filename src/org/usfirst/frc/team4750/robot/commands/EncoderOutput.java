@@ -11,33 +11,33 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class EncoderOutput extends Command {
 
-    public EncoderOutput() {
-    	requires(Robot.encoders);
-    }
+	public EncoderOutput() {
+		requires(Robot.encoders);
+	}
 
-    // Called just before this Command runs the first time
-    protected void initialize() {
-    	requires(Robot.encoders);
-    }
+	// Called just before this Command runs the first time
+	protected void initialize() {
+		requires(Robot.encoders);
+	}
 
-    // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
+	// Called repeatedly when this Command is scheduled to run
+	protected void execute() {
 		// Output range in inches to dashboard
-    	SmartDashboard.putNumber("Left Encoder Distance (inches)", Robot.encoders.getLeftDistanceInches());
-    	SmartDashboard.putNumber("Right Encoder Distance (inches)", Robot.encoders.getRightDistanceInches());
-    }
+		SmartDashboard.putNumber("Left Encoder Distance (inches)", Robot.encoders.getLeftDistanceInches());
+		SmartDashboard.putNumber("Right Encoder Distance (inches)", Robot.encoders.getRightDistanceInches());
+	}
 
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-        return false;
-    }
+	// Make this return true when this Command no longer needs to run execute()
+	protected boolean isFinished() {
+		return false;
+	}
 
-    // Called once after isFinished returns true
-    protected void end() {
-    }
+	// Called once after isFinished returns true
+	protected void end() {
+	}
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
-    }
+	// Called when another command which requires one or more of the same
+	// subsystems is scheduled to run
+	protected void interrupted() {
+	}
 }

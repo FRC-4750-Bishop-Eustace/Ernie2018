@@ -4,11 +4,12 @@ import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 
 /**
- * This class acts as a PIDSource that returns the average of both the left and right encoders
+ * This class acts as a PIDSource that returns the average of both the left and
+ * right encoders
  *
  */
 public class AveragePIDSource implements PIDSource {
-	
+
 	// Create variable
 	double average;
 
@@ -29,5 +30,5 @@ public class AveragePIDSource implements PIDSource {
 		average = (Robot.encoders.getLeftDistanceInches() + Robot.encoders.getRightDistanceInches()) / 2;
 		return average;
 	}
-	
+
 }

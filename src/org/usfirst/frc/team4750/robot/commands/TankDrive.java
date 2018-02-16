@@ -15,16 +15,12 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- * This command calls the drive train to run the default joystick drive
- * When button two on the left drive stick is held down, it will switch from
- * single stick arcade drive to dual stick tank drive
+ * This command calls the drive train to run the default joystick drive When
+ * button two on the left drive stick is held down, it will switch from single
+ * stick arcade drive to dual stick tank drive
  * 
  */
 public class TankDrive extends Command {
-	
-	// Create button
-	Button dualDriveButton = new JoystickButton(OI.leftDriveStick, 2);
-	
 	public TankDrive() {
 		requires(Robot.driveTrain);
 	}
@@ -38,10 +34,10 @@ public class TankDrive extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		if(dualDriveButton.get()) {
+		if (OI.leftDriveStick.getRawButton(2)) {
 			// Call dual joystick drive and pass in both joysticks
 			Robot.driveTrain.dualDrive(OI.leftDriveStick, OI.rightDriveStick);
-		}else {
+		} else {
 			// Call single joystick drive and pass in the right joystick
 			Robot.driveTrain.singleDrive(OI.rightDriveStick);
 		}
