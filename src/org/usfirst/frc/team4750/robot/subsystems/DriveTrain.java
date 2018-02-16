@@ -35,8 +35,9 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 	// Robot drive
 	OurRobotDrive robotDrive;
 
-	// Time (s) to ramp motor speeds
+	// Time to ramp motor speeds
 	double ramp = 0; // 2
+	int rampTimeout = 0;
 
 	// Create PID Controller
 	PIDController syncController;
@@ -65,12 +66,12 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 		backRightMotor = new WPI_TalonSRX(backRightMotorPort);
 
 		// Configure velocity ramping
-		frontLeftMotor.configOpenloopRamp(ramp, 0);
-		frontRightMotor.configOpenloopRamp(ramp, 0);
-		leftMotor.configOpenloopRamp(ramp, 0);
-		rightMotor.configOpenloopRamp(ramp, 0);
-		backLeftMotor.configOpenloopRamp(ramp, 0);
-		backRightMotor.configOpenloopRamp(ramp, 0);
+		frontLeftMotor.configOpenloopRamp(ramp, rampTimeout);
+		frontRightMotor.configOpenloopRamp(ramp, rampTimeout);
+		leftMotor.configOpenloopRamp(ramp, rampTimeout);
+		rightMotor.configOpenloopRamp(ramp, rampTimeout);
+		backLeftMotor.configOpenloopRamp(ramp, rampTimeout);
+		backRightMotor.configOpenloopRamp(ramp, rampTimeout);
 
 		// Initialize controller groups
 		leftMotors = new SpeedControllerGroup(frontLeftMotor, leftMotor, backLeftMotor);
@@ -95,19 +96,20 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 	// Single joystick drive
 	public void singleDrive(Joystick j) {
 		if (syncController.isEnabled()) {
-			// Configure velocity ramping
-			frontLeftMotor.configOpenloopRamp(0, 0);
-			frontRightMotor.configOpenloopRamp(0, 0);
-			leftMotor.configOpenloopRamp(0, 0);
-			rightMotor.configOpenloopRamp(0, 0);
-			backLeftMotor.configOpenloopRamp(0, 0);
-			backRightMotor.configOpenloopRamp(0, 0);
 			syncController.disable();
 		}
 		// Set motor speeds to the joystick values (inverted)
 		// Y-axis = forward/backward speed
 		// Throttle (twist on joystick) = rotate speed
 		robotDrive.arcadeDrive(-j.getY(), j.getThrottle());
+	}
+	
+	// Turn at a certain speed
+	public void setTurnSpeed(double speed) {
+		if (syncController.isEnabled()) {
+			syncController.disable();
+		}
+		robotDrive.arcadeDrive(0, speed);
 	}
 
 	// Drive forward at a certain speed

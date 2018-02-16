@@ -26,20 +26,6 @@ public class IMU extends Subsystem implements PIDSource {
 			System.out.println("IMU failed to connect");
 		}
 	}
-	
-	public void initDefaultCommand() {
-		// Call output command
-		setDefaultCommand(new IMUOutput());
-	}
-
-	/**
-	 * Call this to reset the IMU
-	 * 
-	 */
-	public void reset() {
-		ahrs.reset();
-		System.out.println("IMU Reset!");
-	}
 
 	/**
 	 * Use this to get the current heading
@@ -49,6 +35,20 @@ public class IMU extends Subsystem implements PIDSource {
 
 	public float getHeading() {
 		return (float) ahrs.getAngle();
+	}
+	
+	/**
+	 * Call this to reset the IMU
+	 * 
+	 */
+	public void reset() {
+		ahrs.reset();
+		System.out.println("IMU Reset!");
+	}
+	
+	public void initDefaultCommand() {
+		// Call output command
+		setDefaultCommand(new IMUOutput());
 	}
 
 	/**

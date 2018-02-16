@@ -12,12 +12,6 @@ public class EncoderReset extends Command {
 
 	// Check if finished
 	boolean isFinished = false;
-	
-	public EncoderReset() {
-	}
-	
-	protected void initialize() {
-	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {

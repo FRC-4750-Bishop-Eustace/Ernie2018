@@ -17,7 +17,7 @@ public class Encoders extends Subsystem implements PIDSource {
 
 	// Encoders
 	public Encoder leftEncoder;
-	Encoder rightEncoder;
+	public Encoder rightEncoder;
 
 	// Variables
 	double WHEEL_RADIUS = 3;
@@ -32,23 +32,6 @@ public class Encoders extends Subsystem implements PIDSource {
 		// Set distance per pulse (CIRCUMFERENCE / PPR)
 		leftEncoder.setDistancePerPulse(distancePerPulse);
 		rightEncoder.setDistancePerPulse(distancePerPulse);
-	}
-	
-	/**
-	 * Reset methods
-	 * 
-	 */
-	public void resetLeftEncoder() {
-		leftEncoder.reset();
-	}
-
-	public void resetRightEncoder() {
-		rightEncoder.reset();
-	}
-
-	public void resetEncoders() {
-		leftEncoder.reset();
-		rightEncoder.reset();
 	}
 
 	/**
@@ -88,6 +71,23 @@ public class Encoders extends Subsystem implements PIDSource {
 
 	public double getRightDistanceFeet() {
 		return rightEncoder.getDistance() / 12;
+	}
+	
+	/**
+	 * Reset methods
+	 * 
+	 */
+	public void resetLeftEncoder() {
+		leftEncoder.reset();
+	}
+
+	public void resetRightEncoder() {
+		rightEncoder.reset();
+	}
+
+	public void resetEncoders() {
+		leftEncoder.reset();
+		rightEncoder.reset();
 	}
 
 	public void initDefaultCommand() {

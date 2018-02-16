@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
+ * This command handles the autonomous turning mode, keeping track of previous
+ * turns to minimize error
  *
  */
 public class TurnToAngle extends Command {

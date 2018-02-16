@@ -8,6 +8,7 @@
 package org.usfirst.frc.team4750.robot;
 
 import org.usfirst.frc.team4750.robot.commands.EncoderReset;
+import org.usfirst.frc.team4750.robot.commands.IMUReset;
 import org.usfirst.frc.team4750.robot.commands.LeftAuton;
 import org.usfirst.frc.team4750.robot.commands.MiddleAuton;
 import org.usfirst.frc.team4750.robot.commands.RightAuton;
@@ -33,28 +34,26 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends TimedRobot {
 
+	// Initialize subsystems
 	public static final AveragePIDSource pidSource = new AveragePIDSource();
-
 	public static final PIDRelay relay = new PIDRelay();
-
 	public static final IMU imu = new IMU();
-
 	public static final DriveTrain driveTrain = new DriveTrain(RobotMap.FRONT_LEFT_MOTOR_ID,
 			RobotMap.FRONT_RIGHT_MOTOR_ID, RobotMap.LEFT_MOTOR_ID, RobotMap.RIGHT_MOTOR_ID, RobotMap.BACK_LEFT_MOTOR_ID,
 			RobotMap.BACK_RIGHT_MOTOR_ID);
-
 	public static final Ultrasonics ultrasonic = new Ultrasonics();
-	
 	public static final Limelight limelight = new Limelight();
-
 	public static final Encoders encoders = new Encoders();
-
 	public static OI oi;
 
+	// Autonomous commands
 	String gameData;
 	Command autonomousCommand;
 	SendableChooser<String> chooser = new SendableChooser<>();
-	Command reset;
+
+	// Reset commands
+	Command resetEncoders = new EncoderReset();
+	Command resetIMU = new IMUReset();
 
 	/**
 	 * This function is run when the robot is first started up and should be used
@@ -63,15 +62,17 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotInit() {
 		oi = new OI();
-		reset = new EncoderReset();
+		// Start position chooser
 		chooser.addDefault("Middle", "M");
 		chooser.addObject("Left", "L");
 		chooser.addObject("Right", "R");
 		SmartDashboard.putData("Auto mode", chooser);
-		encoders.resetLeftEncoder();
-		encoders.resetRightEncoder();
-		imu.reset();
-		SmartDashboard.putData("Reset Encoders", reset);
+
+		// Reset commands
+		resetEncoders.start();
+		resetIMU.start();
+		SmartDashboard.putData("Reset Encoders", resetEncoders);
+		SmartDashboard.putData("Reset IMU", resetIMU);
 	}
 
 	/**
@@ -86,6 +87,7 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void disabledPeriodic() {
+		// Get plate randomization while disabled
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
 	}
 
@@ -103,10 +105,10 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		
-		switch(chooser.getSelected()) {
-		case "M": 
-			switch(gameData.charAt(0)) {
+		// Determine autonomous mode by comparing start position (chooser) and plate order
+		switch (chooser.getSelected()) {
+		case "M":
+			switch (gameData.charAt(0)) {
 			case 'L':
 				autonomousCommand = new LeftAuton();
 				break;
@@ -116,7 +118,7 @@ public class Robot extends TimedRobot {
 			}
 			break;
 		case "L":
-			switch(gameData.charAt(0)) {
+			switch (gameData.charAt(0)) {
 			case 'L':
 				autonomousCommand = new MiddleAuton();
 				break;
@@ -126,7 +128,7 @@ public class Robot extends TimedRobot {
 			}
 			break;
 		case "R":
-			switch(gameData.charAt(0)) {
+			switch (gameData.charAt(0)) {
 			case 'L':
 				autonomousCommand = new LeftAuton();
 				break;

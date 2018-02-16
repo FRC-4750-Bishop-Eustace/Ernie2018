@@ -10,12 +10,10 @@ package org.usfirst.frc.team4750.robot.commands;
 import org.usfirst.frc.team4750.robot.OI;
 import org.usfirst.frc.team4750.robot.Robot;
 
-import edu.wpi.first.wpilibj.buttons.Button;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- * This command calls the drive train to run the default joystick drive When
+ * This command calls the drive train to run the default joystick drive. When
  * button two on the left drive stick is held down, it will switch from single
  * stick arcade drive to dual stick tank drive
  * 
