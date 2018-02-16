@@ -8,11 +8,15 @@
 package org.usfirst.frc.team4750.robot;
 
 import org.usfirst.frc.team4750.robot.commands.EncoderReset;
+import org.usfirst.frc.team4750.robot.commands.LeftAuton;
+import org.usfirst.frc.team4750.robot.commands.MiddleAuton;
+import org.usfirst.frc.team4750.robot.commands.RightAuton;
 import org.usfirst.frc.team4750.robot.subsystems.DriveTrain;
+import org.usfirst.frc.team4750.robot.subsystems.Encoders;
 import org.usfirst.frc.team4750.robot.subsystems.IMU;
 import org.usfirst.frc.team4750.robot.subsystems.Ultrasonics;
-import org.usfirst.frc.team4750.robot.subsystems.Encoders;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -27,25 +31,26 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * project.
  */
 public class Robot extends TimedRobot {
-	
+
 	public static final AveragePIDSource pidSource = new AveragePIDSource();
 
 	public static final PIDRelay relay = new PIDRelay();
-	
+
 	public static final IMU imu = new IMU();
-	
+
 	public static final DriveTrain driveTrain = new DriveTrain(RobotMap.FRONT_LEFT_MOTOR_ID,
 			RobotMap.FRONT_RIGHT_MOTOR_ID, RobotMap.LEFT_MOTOR_ID, RobotMap.RIGHT_MOTOR_ID, RobotMap.BACK_LEFT_MOTOR_ID,
 			RobotMap.BACK_RIGHT_MOTOR_ID);
 
 	public static final Ultrasonics ultrasonic = new Ultrasonics();
-	
-	public static final Encoders encoders = new Encoders();
-	
-	public static OI m_oi;
 
-	Command m_autonomousCommand;
-	SendableChooser<Command> m_chooser = new SendableChooser<>();
+	public static final Encoders encoders = new Encoders();
+
+	public static OI oi;
+
+	String gameData;
+	Command autonomousCommand;
+	SendableChooser<String> chooser = new SendableChooser<>();
 	Command reset;
 
 	/**
@@ -54,11 +59,12 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotInit() {
-		m_oi = new OI();
+		oi = new OI();
 		reset = new EncoderReset();
-		// m_chooser.addDefault("Default Auto", new ExampleCommand());
-		// chooser.addObject("My Auto", new MyAutoCommand());
-		SmartDashboard.putData("Auto mode", m_chooser);
+		chooser.addDefault("Middle", "M");
+		chooser.addObject("Left", "L");
+		chooser.addObject("Right", "R");
+		SmartDashboard.putData("Auto mode", chooser);
 		encoders.resetLeftEncoder();
 		encoders.resetRightEncoder();
 		imu.reset();
@@ -77,7 +83,7 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void disabledPeriodic() {
-		Scheduler.getInstance().run();
+		gameData = DriverStation.getInstance().getGameSpecificMessage();
 	}
 
 	/**
@@ -94,7 +100,39 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		m_autonomousCommand = m_chooser.getSelected();
+		
+		switch(chooser.getSelected()) {
+		case "M": 
+			switch(gameData.charAt(0)) {
+			case 'L':
+				autonomousCommand = new LeftAuton();
+				break;
+			case 'R':
+				autonomousCommand = new RightAuton();
+				break;
+			}
+			break;
+		case "L":
+			switch(gameData.charAt(0)) {
+			case 'L':
+				autonomousCommand = new MiddleAuton();
+				break;
+			case 'R':
+				autonomousCommand = new RightAuton();
+				break;
+			}
+			break;
+		case "R":
+			switch(gameData.charAt(0)) {
+			case 'L':
+				autonomousCommand = new LeftAuton();
+				break;
+			case 'R':
+				autonomousCommand = new MiddleAuton();
+				break;
+			}
+			break;
+		}
 
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
@@ -104,8 +142,8 @@ public class Robot extends TimedRobot {
 		 */
 
 		// schedule the autonomous command (example)
-		if (m_autonomousCommand != null) {
-			m_autonomousCommand.start();
+		if (autonomousCommand != null) {
+			autonomousCommand.start();
 		}
 	}
 
@@ -123,8 +161,8 @@ public class Robot extends TimedRobot {
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
-		if (m_autonomousCommand != null) {
-			m_autonomousCommand.cancel();
+		if (autonomousCommand != null) {
+			autonomousCommand.cancel();
 		}
 	}
 
