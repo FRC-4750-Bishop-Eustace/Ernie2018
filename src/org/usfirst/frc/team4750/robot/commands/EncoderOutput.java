@@ -6,13 +6,12 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
+ * This command outputs the data from the encoders to the SmartDashboard
  *
  */
 public class EncoderOutput extends Command {
 
     public EncoderOutput() {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
     	requires(Robot.encoders);
     }
 
@@ -23,10 +22,9 @@ public class EncoderOutput extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	SmartDashboard.putNumber("Left Encoder", Robot.encoders.getLeftCount());
-    	SmartDashboard.putNumber("Right Encoder", Robot.encoders.getRightCount());
-    	SmartDashboard.putNumber("Left Encoder Distance Inches", Robot.encoders.getLeftDistanceInches());
-    	SmartDashboard.putNumber("Right Encoder Distance Inches", Robot.encoders.getRightDistanceInches());
+		// Output range in inches to dashboard
+    	SmartDashboard.putNumber("Left Encoder Distance (inches)", Robot.encoders.getLeftDistanceInches());
+    	SmartDashboard.putNumber("Right Encoder Distance (inches)", Robot.encoders.getRightDistanceInches());
     }
 
     // Make this return true when this Command no longer needs to run execute()

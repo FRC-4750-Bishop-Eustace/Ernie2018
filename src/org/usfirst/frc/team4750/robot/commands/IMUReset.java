@@ -3,31 +3,26 @@ package org.usfirst.frc.team4750.robot.commands;
 import org.usfirst.frc.team4750.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- * This command outputs the data from the IMU to the SmartDashboard
+ * This command is used for resetting the IMU's heading
  *
  */
-public class IMUOutput extends Command {
+public class IMUReset extends Command {
 
-	public IMUOutput() {
-		requires(Robot.imu);
-	}
-
-	// Called just before this Command runs the first time
-	protected void initialize() {
-	}
+	// Check if finished
+	boolean isFinished = false;
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		// Output current heading to dashboard
-		SmartDashboard.putNumber("IMU", Robot.imu.getHeading());
+		// Resets the IMU
+		Robot.imu.reset();
+		isFinished = true;
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-		return false;
+		return isFinished;
 	}
 
 	// Called once after isFinished returns true

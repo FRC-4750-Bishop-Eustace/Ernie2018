@@ -11,10 +11,11 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
  * This class is the interface to the IMU hardware
- *
+ * 
  */
 public class IMU extends Subsystem implements PIDSource {
 
+	// Create IMU
 	public AHRS ahrs;
 
 	public IMU() {
@@ -24,13 +25,6 @@ public class IMU extends Subsystem implements PIDSource {
 		} catch (Exception e) {
 			System.out.println("IMU failed to connect");
 		}
-	}
-
-	// Set the default command for a subsystem here. This will be called whenever
-	// the subsystem is not being used.
-	public void initDefaultCommand() {
-		// Call output command
-		setDefaultCommand(new IMUOutput());
 	}
 
 	/**
@@ -51,7 +45,16 @@ public class IMU extends Subsystem implements PIDSource {
 	public float getHeading() {
 		return (float) ahrs.getAngle();
 	}
-
+	
+	public void initDefaultCommand() {
+		// Call output command
+		setDefaultCommand(new IMUOutput());
+	}
+	
+	/**
+	 * PIDSource required methods
+	 * 
+	 */
 	@Override
 	public void setPIDSourceType(PIDSourceType pidSource) {
 		// TODO Auto-generated method stub

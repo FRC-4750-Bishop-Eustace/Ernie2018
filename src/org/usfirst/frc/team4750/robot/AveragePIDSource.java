@@ -3,8 +3,13 @@ package org.usfirst.frc.team4750.robot;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 
-class AveragePIDSource implements PIDSource {
+/**
+ * This class acts as a PIDSource that returns the average of both the left and right encoders
+ *
+ */
+public class AveragePIDSource implements PIDSource {
 	
+	// Create variable
 	double average;
 
 	@Override
@@ -20,6 +25,7 @@ class AveragePIDSource implements PIDSource {
 
 	@Override
 	public double pidGet() {
+		// Get the average of the left and right encoders
 		average = (Robot.encoders.getLeftDistanceInches() + Robot.encoders.getRightDistanceInches()) / 2;
 		return average;
 	}

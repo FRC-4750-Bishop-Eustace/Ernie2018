@@ -8,14 +8,15 @@
 package org.usfirst.frc.team4750.robot;
 
 import org.usfirst.frc.team4750.robot.commands.EncoderReset;
+import org.usfirst.frc.team4750.robot.commands.IMUReset;
 import org.usfirst.frc.team4750.robot.commands.LeftAuton;
 import org.usfirst.frc.team4750.robot.commands.MiddleAuton;
 import org.usfirst.frc.team4750.robot.commands.RightAuton;
 import org.usfirst.frc.team4750.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team4750.robot.subsystems.Encoders;
 import org.usfirst.frc.team4750.robot.subsystems.IMU;
-import org.usfirst.frc.team4750.robot.subsystems.Ultrasonics;
 import org.usfirst.frc.team4750.robot.subsystems.Limelight;
+import org.usfirst.frc.team4750.robot.subsystems.Ultrasonics;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -33,28 +34,24 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends TimedRobot {
 
+	// Initialize subsystems
 	public static final AveragePIDSource pidSource = new AveragePIDSource();
-
 	public static final PIDRelay relay = new PIDRelay();
-
 	public static final IMU imu = new IMU();
-
 	public static final DriveTrain driveTrain = new DriveTrain(RobotMap.FRONT_LEFT_MOTOR_ID,
 			RobotMap.FRONT_RIGHT_MOTOR_ID, RobotMap.LEFT_MOTOR_ID, RobotMap.RIGHT_MOTOR_ID, RobotMap.BACK_LEFT_MOTOR_ID,
 			RobotMap.BACK_RIGHT_MOTOR_ID);
-
 	public static final Ultrasonics ultrasonic = new Ultrasonics();
-	
 	public static final Limelight limelight = new Limelight();
-
 	public static final Encoders encoders = new Encoders();
-
 	public static OI oi;
 
+	// Autonomous data
 	String gameData;
 	Command autonomousCommand;
 	SendableChooser<String> chooser = new SendableChooser<>();
-	Command reset;
+	Command encoderReset = new EncoderReset();
+	Command imuReset = new IMUReset();
 
 	/**
 	 * This function is run when the robot is first started up and should be used
@@ -63,15 +60,17 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotInit() {
 		oi = new OI();
-		reset = new EncoderReset();
+		// Reset all sensors
+		encoderReset.start();
+		imuReset.start();
+		// Create start position chooser
 		chooser.addDefault("Middle", "M");
 		chooser.addObject("Left", "L");
 		chooser.addObject("Right", "R");
 		SmartDashboard.putData("Auto mode", chooser);
-		encoders.resetLeftEncoder();
-		encoders.resetRightEncoder();
-		imu.reset();
-		SmartDashboard.putData("Reset Encoders", reset);
+		// Add reset commands to dashboard
+		SmartDashboard.putData("Reset Encoders", encoderReset);
+		SmartDashboard.putData("Reset IMU", imuReset);
 	}
 
 	/**
@@ -86,7 +85,9 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void disabledPeriodic() {
+		// Get the game data while the robot is still disabled
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
+		SmartDashboard.putString("Game Data", gameData);
 	}
 
 	/**
@@ -103,10 +104,11 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		
-		switch(chooser.getSelected()) {
-		case "M": 
-			switch(gameData.charAt(0)) {
+		// Switch statement to choose autonomous mode
+		// Takes into account starting position and plate randomization
+		switch (chooser.getSelected()) {
+		case "M":
+			switch (gameData.charAt(0)) {
 			case 'L':
 				autonomousCommand = new LeftAuton();
 				break;
@@ -116,7 +118,7 @@ public class Robot extends TimedRobot {
 			}
 			break;
 		case "L":
-			switch(gameData.charAt(0)) {
+			switch (gameData.charAt(0)) {
 			case 'L':
 				autonomousCommand = new MiddleAuton();
 				break;
@@ -126,7 +128,7 @@ public class Robot extends TimedRobot {
 			}
 			break;
 		case "R":
-			switch(gameData.charAt(0)) {
+			switch (gameData.charAt(0)) {
 			case 'L':
 				autonomousCommand = new LeftAuton();
 				break;
@@ -175,7 +177,9 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		// Output values to SmartDashboard
 		SmartDashboard.putNumber("Z axis", ((OI.rightDriveStick.getZ() - 1) / -2));
+		SmartDashboard.putNumber("Limelight offset", -limelight.getXOffset());
 	}
 
 	/**

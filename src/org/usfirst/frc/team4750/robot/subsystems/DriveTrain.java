@@ -21,7 +21,8 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- * An example subsystem. You can replace me with your own Subsystem.
+ * This class contains all the methods to control the drive train in any form
+ * 
  */
 public class DriveTrain extends Subsystem implements PIDOutput {
 
@@ -35,20 +36,21 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 	OurRobotDrive robotDrive;
 
 	// Time (s) to ramp motor speeds
-	double ramp = 0;//2;
+	double ramp = 0; // 2
+	int rampTimeout = 100;
 
 	// Create PID Controller
-	PIDController straightDriveController;
+	PIDController syncController;
 
 	// PID Output
 	double output;
-	
+
 	// PID Values
-	static final double P = 0.01; // 0.03
+	static final double P = 0.01; // 0.01
 	static final double I = 0.003; // 0.003
 	static final double D = 0.05; // 0.05
-	static final double F = 0.0;
-	
+	static final double F = 0.0; // 0.0
+
 	// Rate to straighten drive train
 	double rotateRate;
 
@@ -62,14 +64,14 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 		rightMotor = new WPI_TalonSRX(rightMotorPort);
 		backLeftMotor = new WPI_TalonSRX(backLeftMotorPort);
 		backRightMotor = new WPI_TalonSRX(backRightMotorPort);
-		
+
 		// Configure velocity ramping
-		frontLeftMotor.configOpenloopRamp(ramp, 0);
-		frontRightMotor.configOpenloopRamp(ramp, 0);
-		leftMotor.configOpenloopRamp(ramp, 0);
-		rightMotor.configOpenloopRamp(ramp, 0);
-		backLeftMotor.configOpenloopRamp(ramp, 0);
-		backRightMotor.configOpenloopRamp(ramp, 0);
+		frontLeftMotor.configOpenloopRamp(ramp, rampTimeout);
+		frontRightMotor.configOpenloopRamp(ramp, rampTimeout);
+		leftMotor.configOpenloopRamp(ramp, rampTimeout);
+		rightMotor.configOpenloopRamp(ramp, rampTimeout);
+		backLeftMotor.configOpenloopRamp(ramp, rampTimeout);
+		backRightMotor.configOpenloopRamp(ramp, rampTimeout);
 
 		// Initialize controller groups
 		leftMotors = new SpeedControllerGroup(frontLeftMotor, leftMotor, backLeftMotor);
@@ -77,15 +79,15 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 
 		// Initialize robot drive
 		robotDrive = new OurRobotDrive(leftMotors, rightMotors);
-		
+
 		// Initialize PID controller
-		straightDriveController = new PIDController(P, I, D, F, Robot.imu.ahrs, Robot.relay);
+		syncController = new PIDController(P, I, D, F, Robot.imu.ahrs, Robot.relay);
 	}
 
 	// Dual joystick drive
 	public void dualDrive(Joystick l, Joystick r) {
-		if(straightDriveController.isEnabled()) {
-			straightDriveController.disable();
+		if (syncController.isEnabled()) {
+			syncController.disable();
 		}
 		// Set motor speeds to the joystick values (inverted)
 		robotDrive.tankDrive(-l.getY(), -r.getY());
@@ -93,15 +95,8 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 
 	// Single joystick drive
 	public void singleDrive(Joystick j) {
-		if(straightDriveController.isEnabled()) {
-			// Configure velocity ramping
-			frontLeftMotor.configOpenloopRamp(0, 0);
-			frontRightMotor.configOpenloopRamp(0, 0);
-			leftMotor.configOpenloopRamp(0, 0);
-			rightMotor.configOpenloopRamp(0, 0);
-			backLeftMotor.configOpenloopRamp(0, 0);
-			backRightMotor.configOpenloopRamp(0, 0);
-			straightDriveController.disable();
+		if (syncController.isEnabled()) {
+			syncController.disable();
 		}
 		// Set motor speeds to the joystick values (inverted)
 		// Y-axis = forward/backward speed
@@ -111,62 +106,73 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 
 	// Drive forward at a certain speed
 	public void setDriveSpeed(double speed) {
-		if(straightDriveController.isEnabled()) {
-			straightDriveController.disable();
+		if (syncController.isEnabled()) {
+			syncController.disable();
 		}
 		robotDrive.arcadeDrive(speed, 0);
-		System.out.println("running");
 	}
 
-	// Turn with PID
-	public void pidTurn() {
-		if(straightDriveController.isEnabled()) {
-			straightDriveController.disable();
+	// Turn at a certain speed
+	public void setTurnSpeed(double speed) {
+		if (syncController.isEnabled()) {
+			syncController.disable();
 		}
-		robotDrive.tankDrive(output, -output);
+		robotDrive.arcadeDrive(0, speed);
 	}
 
 	// Drive with PID
 	public void pidDrive() {
-		if(!straightDriveController.isEnabled()) {
-			straightDriveController.setSetpoint(Robot.imu.ahrs.getYaw());
+		if (!syncController.isEnabled()) {
+			// Set setpoint to the current angle
+			syncController.setSetpoint(Robot.imu.ahrs.getYaw());
 			rotateRate = 0;
-			straightDriveController.enable();
+			// Enable PID controller
+			syncController.enable();
 		}
-		
+
+		// Set speeds to DriveToDistance output +/- straightDriveController output
+		// (rotateRate)
 		double leftSpeed = output + rotateRate;
 		double rightSpeed = output - rotateRate;
-		
+
+		// Output motor speeds
 		SmartDashboard.putNumber("Left Speed", leftSpeed);
 		SmartDashboard.putNumber("Right Speed", rightSpeed);
-		
+
 		robotDrive.tankDrive(leftSpeed, rightSpeed);
+	}
+
+	// Turn with PID
+	public void pidTurn() {
+		if (syncController.isEnabled()) {
+			syncController.disable();
+		}
+		robotDrive.tankDrive(output, -output);
 	}
 
 	// Stop all motors
 	public void brake() {
-		if(straightDriveController.isEnabled()) {
-			straightDriveController.disable();
+		if (syncController.isEnabled()) {
+			syncController.disable();
 		}
 		robotDrive.tankDrive(0, 0);
 	}
 
-	// Set global output variable to the PIDController output
+	// Set global output variable to the PIDController output (turnController, driveController)
 	@Override
 	public void pidWrite(double output) {
 		this.output = output;
 		SmartDashboard.putNumber("Encoder PID", output);
 	}
-	
+
+	// Set global output variable to the PIDController output (syncController)
 	public void pidStraightWrite(double output) {
 		this.rotateRate = output;
 		SmartDashboard.putNumber("Adjust PID", output);
 	}
 
-	// Set the default command for a subsystem here. This will be called whenever
-	// the subsystem is not being used.
 	public void initDefaultCommand() {
-		// Call controller (teleop) drive
+		// Call controlled (teleop) drive
 		setDefaultCommand(new TankDrive());
 	}
 }

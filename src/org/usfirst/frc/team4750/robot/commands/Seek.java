@@ -7,55 +7,56 @@
 
 package org.usfirst.frc.team4750.robot.commands;
 
-import org.usfirst.frc.team4750.robot.OI;
-import org.usfirst.frc.team4750.robot.Robot;
-
-import edu.wpi.first.wpilibj.buttons.Button;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 
+import org.usfirst.frc.team4750.robot.Robot;
+
 /**
- * This command calls the drive train to run the default joystick drive
- * When button two on the left drive stick is held down, it will switch from
- * single stick arcade drive to dual stick tank drive
+ * This command finds a vision target if there are none
  * 
  */
-public class TankDrive extends Command {
-	
-	// Create button
-	Button dualDriveButton = new JoystickButton(OI.leftDriveStick, 2);
-	
-	public TankDrive() {
-		requires(Robot.driveTrain);
-	}
+public class Seek extends Command {
+
+	// Is a target in view
+	boolean hasTarget;
+	// Speed to turn at
+	double speed = 0.6;
+	// Check if finished
+	boolean isFinished = false;
+	// Aim command
+	Command aim;
 
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		requires(Robot.driveTrain);
+		aim = new Aim();
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		if(dualDriveButton.get()) {
-			// Call dual joystick drive and pass in both joysticks
-			Robot.driveTrain.dualDrive(OI.leftDriveStick, OI.rightDriveStick);
-		}else {
-			// Call single joystick drive and pass in the right joystick
-			Robot.driveTrain.singleDrive(OI.rightDriveStick);
+		// Get if the target is in view
+		hasTarget = Robot.limelight.getHasTarget();
+
+		if (!hasTarget) { // If the target is not in view, set the motors to turn the robot
+			Robot.driveTrain.setTurnSpeed(speed);
+		} else { // If the target is in view, finish
+			Robot.driveTrain.brake();
+			isFinished = true;
 		}
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return false;
+		return isFinished;
 	}
 
 	// Called once after isFinished returns true
 	@Override
 	protected void end() {
+		aim.start();
+		System.out.println("Seek(): Target found!");
 	}
 
 	// Called when another command which requires one or more of the same

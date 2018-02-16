@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
+ * This command outputs the data from the ultrasonic sensor to the SmartDashboard
  *
  */
 public class UltrasonicOutput extends Command {
@@ -13,9 +14,9 @@ public class UltrasonicOutput extends Command {
 	public UltrasonicOutput() {
 		requires(Robot.ultrasonic);
 	}
-
-	// Called just before this Command runs the first time
+	
 	protected void initialize() {
+		requires(Robot.ultrasonic);
 	}
 
 	// Called repeatedly when this Command is scheduled to run

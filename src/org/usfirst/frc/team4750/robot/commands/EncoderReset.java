@@ -5,29 +5,24 @@ import org.usfirst.frc.team4750.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
+ * This command is used for resetting the encoders
  *
  */
 public class EncoderReset extends Command {
 
-	boolean done = false;
-
-	public EncoderReset() {
-	}
-
-	// Called just before this Command runs the first time
-	protected void initialize() {
-	}
+	// Check if finished
+	boolean isFinished = false;
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		Robot.encoders.resetLeftEncoder();
-		Robot.encoders.resetRightEncoder();
-		done = true;
+		// Resets the encoders
+		Robot.encoders.resetEncoders();
+		isFinished = true;
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-		return done;
+		return isFinished;
 	}
 
 	// Called once after isFinished returns true

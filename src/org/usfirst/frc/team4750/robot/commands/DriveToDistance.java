@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
+ * This command is a PID controlled drive-to-distance command using encoders
  *
  */
 public class DriveToDistance extends Command {
@@ -20,46 +21,50 @@ public class DriveToDistance extends Command {
 	private boolean isFinished = false;
 
 	// PID Values
-	static final double P = 0.06; // 0.03
-	static double I = 0.0001; // 0.001
-	static final double D = 0.01; // 0.0
-	static final double F = 0.55;
+	static final double P = 0.06; // 0.06
+	static double I = 0.0001; // 0.0001
+	static final double D = 0.01; // 0.01
+	static final double F = 0.55; // 0.55
 
 	// Minimum error
 	static final double tolerance = 1.0;
 
+	// Takes in distance in inches or feet
 	public DriveToDistance(float distance, boolean feet) {
-		if(!feet) {
+		// If feet is false, then the input is in inches. If not, convert feet to
+		// inches.
+		if (!feet) {
 			this.targetDistance = distance;
-			
-			if(targetDistance > 72) {
+
+			// Change I value depending on the distance being traveled
+			if (targetDistance > 72) {
 				I = 0.004;
 			}
 			// Print to SmartDashboard
 			SmartDashboard.putNumber("Target Distance (inches)", this.targetDistance);
-		}else {
+		} else {
+			// Convert feet to inches
 			this.targetDistance = distance * 12;
-			
-			if(targetDistance > 6) {
+
+			// Change I value depending on the distance being traveled
+			if (targetDistance > 6) {
 				I = 0.004;
 			}
 			// Print to SmartDashboard
 			SmartDashboard.putNumber("Target Distance (feet)", distance);
 		}
-		
-		// Subsystem dependency
-		requires(Robot.driveTrain);
 
-		// System.out.println("ControlledTurn() Initialize");
+		// System.out.println("DriveToDistance(): Constructor ran!");
 	}
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
+		// Reset encoders before driving
 		Robot.encoders.resetEncoders();
-		// Initialize PID controller
+		// Initialize PID controller // TODO Change to AveragePID
 		driveController = new PIDController(P, I, D, F, Robot.encoders.leftEncoder, Robot.driveTrain);
-		// Max motor speed (0.6)
-		driveController.setOutputRange(-0.6, 0.6);
+		// Max motor speed
+		driveController.setOutputRange(-0.6, 0.6); // 0.6
 		// Max error
 		driveController.setAbsoluteTolerance(tolerance);
 		// Set PID to turn to setpoint
@@ -67,7 +72,7 @@ public class DriveToDistance extends Command {
 		// Enable PID controller
 		driveController.enable();
 
-		// System.out.println("ControlledTurn() Initialize");
+		// System.out.println("DriveToDistance(): Initialize ran!");
 	}
 
 	// Called repeatedly when this Command is scheduled to run
@@ -82,10 +87,9 @@ public class DriveToDistance extends Command {
 		// moving, then finish
 		if (Math.abs(driveController.getError()) < tolerance) {
 			Timer.delay(.05);
-			SmartDashboard.putNumber("getError()", driveController.getError());
+			SmartDashboard.putNumber("DriveToDistance Error", driveController.getError());
 			if (Math.abs(driveController.getError()) < tolerance) {
 				isFinished = true;
-				System.out.println("EncoderDrive() isFinished");
 			} else {
 				isFinished = false;
 			}
@@ -97,12 +101,12 @@ public class DriveToDistance extends Command {
 		Robot.driveTrain.pidDrive();
 
 		// Output current error
-		SmartDashboard.putNumber("getError()", driveController.getError());
+		SmartDashboard.putNumber("DriveToDistance Error", driveController.getError());
 
 		// Wait for motor update
 		Timer.delay(0.005);
 
-		// System.out.println("ControlledTurn() Execute");
+		// System.out.println("DriveToDistance(): Execute ran!");
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
@@ -112,16 +116,18 @@ public class DriveToDistance extends Command {
 
 	// Called once after isFinished returns true
 	protected void end() {
-		System.out.println("Should be at target!");
 		// Stop motors
 		Robot.driveTrain.brake();
 		// Disable PID controller
 		driveController.disable();
+		// System.out.println("DriveToDistance(): Should be at target!");
 	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	protected void interrupted() {
-		// System.out.println("ControlledTurn() Interrupted");
+		// Disable PID controller
+		driveController.disable();
+		// System.out.println("DriveToDistance(): Interrupted ran!");
 	}
 }

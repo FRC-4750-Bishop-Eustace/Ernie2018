@@ -7,9 +7,11 @@
 
 package org.usfirst.frc.team4750.robot;
 
-
-import org.usfirst.frc.team4750.robot.commands.TurnToAngle;
-import org.usfirst.frc.team4750.robot.commands.DriveToDistance;
+import org.usfirst.frc.team4750.robot.commands.Aim;
+import org.usfirst.frc.team4750.robot.commands.Seek;
+import org.usfirst.frc.team4750.robot.commands.SwitchCameraMode;
+import org.usfirst.frc.team4750.robot.commands.SwitchLEDMode;
+import org.usfirst.frc.team4750.robot.commands.TurnDegrees;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -18,22 +20,26 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
+ * 
  */
 public class OI {
+	
 	// Joysticks
 	public static Joystick leftDriveStick = new Joystick(RobotMap.LEFT_JOYSTICK_PORT);
 	public static Joystick rightDriveStick = new Joystick(RobotMap.RIGHT_JOYSTICK_PORT);
 
 	// Buttons
-	Button driveButton = new JoystickButton(leftDriveStick, 2);
-	Button driveBackButton = new JoystickButton(rightDriveStick, 2);
-	Button turnLeftButton = new JoystickButton(leftDriveStick, 3);
-	Button turnRightButton = new JoystickButton(rightDriveStick, 4);
+	Button ledButton = new JoystickButton(leftDriveStick, 3);
+	Button camButton = new JoystickButton(leftDriveStick, 4);
+	Button seekButton = new JoystickButton(rightDriveStick, 3);
+	Button aimButton = new JoystickButton(rightDriveStick, 4);
+	Button turnButton = new JoystickButton(leftDriveStick, 2);
 	
 	public OI() {
-		driveButton.whenReleased(new DriveToDistance(1, true));
-		driveBackButton.whenReleased(new DriveToDistance(-1, true));
-		turnLeftButton.whenReleased(new TurnToAngle(-90));
-		turnRightButton.whenReleased(new TurnToAngle(90));
+		ledButton.whenReleased(new SwitchLEDMode());
+		camButton.whenReleased(new SwitchCameraMode());
+		seekButton.whenReleased(new Seek());
+		aimButton.whenReleased(new Aim());
+		turnButton.whenReleased(new TurnDegrees(90));
 	}
 }

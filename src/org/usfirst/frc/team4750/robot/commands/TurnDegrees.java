@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  *
  */
-public class TurnToAngle extends Command {
+public class TurnDegrees extends Command {
 
 	// Create PID Controller
 	PIDController turnController;
@@ -18,40 +18,37 @@ public class TurnToAngle extends Command {
 	private float targetHeading;
 	// Check if finished
 	private boolean isFinished = false;
-	// Cumulative heading
-	private static float cumulativeHeading;
 
 	// PID Values
 	static final double P = 0.03; // 0.03
 	static final double I = 0.003; // 0.003
 	static final double D = 0.05; // 0.05
-	static final double F = 0.6; // 0.06
+	static final double F = 0.6; // 0.6
 
 	// Minimum error
 	static final double toleranceDegrees = 2.0;
 
-	public TurnToAngle(float targetHeading) {
+	public TurnDegrees(float targetHeading) {
 		// Get heading
 		this.targetHeading = targetHeading;
 		// Print to SmartDashboard
 		SmartDashboard.putNumber("Target Heading", this.targetHeading);
+		// Reset the IMU to zero
+		Robot.imu.reset();
 
-		// System.out.println("TurnToAngle(): Contructor ran!");
+		// System.out.println("TurnDegrees(): Contructor ran!");
 	}
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		// If the new target is out of the range of the PID controller, reset the IMU
-		// and cumulativeHeading to match
-		if (cumulativeHeading + targetHeading > 180 || cumulativeHeading + targetHeading < -180) {
-			cumulativeHeading = 0;
-			Robot.imu.reset();
-			System.out.println("TurnToAngle(): Out of bounds!");
+		// If the heading is out of the PID controller, turn in the opposite direction
+		if(targetHeading > 180) {
+			targetHeading -= 360;
+		}else if (targetHeading < -180) {
+			targetHeading += 360;
 		}
-		// Add the target to the cumulative turns
-		cumulativeHeading += targetHeading;
 		// Output
-		SmartDashboard.putNumber("Cumulative Heading", cumulativeHeading);
+		SmartDashboard.putNumber("Target Heading", targetHeading);
 		// Initialize PID controller
 		turnController = new PIDController(P, I, D, F, Robot.imu.ahrs, Robot.driveTrain);
 		// Min and max angle to turn to
@@ -62,11 +59,11 @@ public class TurnToAngle extends Command {
 		turnController.setAbsoluteTolerance(toleranceDegrees);
 		turnController.setContinuous(true);
 		// Set PID to turn to setpoint
-		turnController.setSetpoint(cumulativeHeading);
+		turnController.setSetpoint(targetHeading);
 		// Enable PID controller
 		turnController.enable();
 
-		// System.out.println("TurnToAngle(): Initialize ran!");
+		// System.out.println("TurnDegrees(): Initialize ran!");
 	}
 
 	// Called repeatedly when this Command is scheduled to run
@@ -99,7 +96,7 @@ public class TurnToAngle extends Command {
 		// Wait for motor update
 		Timer.delay(0.005);
 
-		// System.out.println("TurnToAngle(): Execute");
+		// System.out.println("TurnDegrees(): Execute");
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
@@ -113,7 +110,7 @@ public class TurnToAngle extends Command {
 		Robot.driveTrain.brake();
 		// Disable PID controller
 		turnController.disable();
-		System.out.println("TurnToAngle(): Should be at target!");
+		System.out.println("TurnDegrees(): Should be at target!");
 	}
 
 	// Called when another command which requires one or more of the same
@@ -121,6 +118,6 @@ public class TurnToAngle extends Command {
 	protected void interrupted() {
 		// Disable PID controller
 		turnController.disable();
-		// System.out.println("TurnToAngle(): Interrupted ran!");
+		// System.out.println("TurnDegrees(): Interrupted ran!");
 	}
 }

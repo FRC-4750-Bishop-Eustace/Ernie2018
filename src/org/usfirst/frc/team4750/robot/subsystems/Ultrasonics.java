@@ -7,7 +7,8 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
- *
+ * This class is the interface to the ultrasonic sensors (SR04)
+ * 
  */
 public class Ultrasonics extends Subsystem {
 
