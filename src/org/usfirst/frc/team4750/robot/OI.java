@@ -8,7 +8,9 @@
 package org.usfirst.frc.team4750.robot;
 
 import org.usfirst.frc.team4750.robot.commands.DriveToDistance;
+import org.usfirst.frc.team4750.robot.commands.ReleasePiston;
 import org.usfirst.frc.team4750.robot.commands.SwitchCameraMode;
+import org.usfirst.frc.team4750.robot.commands.SwitchElevatorMode;
 import org.usfirst.frc.team4750.robot.commands.SwitchLEDMode;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -25,6 +27,7 @@ public class OI {
 	// Joysticks
 	public static Joystick leftDriveStick = new Joystick(RobotMap.LEFT_JOYSTICK_PORT);
 	public static Joystick rightDriveStick = new Joystick(RobotMap.RIGHT_JOYSTICK_PORT);
+	public static Joystick controlDriveStick = new Joystick(RobotMap.CONTROL_JOYSTICK_PORT);
 
 	// Buttons
 	Button turnButton = new JoystickButton(leftDriveStick, 2);
@@ -33,6 +36,8 @@ public class OI {
 	Button followButton = new JoystickButton(leftDriveStick, 5);
 	Button camButton = new JoystickButton(rightDriveStick, 3);
 	Button ledButton = new JoystickButton(rightDriveStick, 4);
+	Button switchElevatorPiston = new JoystickButton(controlDriveStick, 1);
+	Button releasePistonButton = new JoystickButton(controlDriveStick, 2);
 
 	public OI() {
 //		turnButton.whenReleased(new TeleopTurn(180));
@@ -41,5 +46,7 @@ public class OI {
 		followButton.whenReleased(new DriveToDistance(15, true));
 		camButton.whenReleased(new SwitchCameraMode());
 		ledButton.whenReleased(new SwitchLEDMode());
+		switchElevatorPiston.whenReleased(new SwitchElevatorMode());
+		releasePistonButton.whenReleased(new ReleasePiston());
 	}
 }
