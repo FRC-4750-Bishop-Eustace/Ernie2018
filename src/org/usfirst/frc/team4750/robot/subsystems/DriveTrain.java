@@ -132,8 +132,7 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 	public void pidDrive() {
 		if (!syncController.isEnabled()) {
 			// Set setpoint to the current angle
-			syncController.setSetpoint(Robot.imu.ahrs.getYaw());
-			rotateRate = 0;
+			syncController.setSetpoint(Robot.imu.getHeading());
 			// Enable PID controller
 			syncController.enable();
 		}
@@ -142,7 +141,7 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 		// (rotateRate)
 		double leftSpeed = output + rotateRate;
 		double rightSpeed = output - rotateRate;
-
+		
 		// Output motor speeds
 		SmartDashboard.putNumber("Left Speed", leftSpeed);
 		SmartDashboard.putNumber("Right Speed", rightSpeed);

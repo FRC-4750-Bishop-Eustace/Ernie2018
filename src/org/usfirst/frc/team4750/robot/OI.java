@@ -8,7 +8,8 @@
 package org.usfirst.frc.team4750.robot;
 
 import org.usfirst.frc.team4750.robot.commands.DriveToDistance;
-import org.usfirst.frc.team4750.robot.commands.TurnToAngle;
+import org.usfirst.frc.team4750.robot.commands.SwitchCameraMode;
+import org.usfirst.frc.team4750.robot.commands.SwitchLEDMode;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -26,15 +27,19 @@ public class OI {
 	public static Joystick rightDriveStick = new Joystick(RobotMap.RIGHT_JOYSTICK_PORT);
 
 	// Buttons
-	Button driveButton = new JoystickButton(leftDriveStick, 2);
-	Button driveBackButton = new JoystickButton(rightDriveStick, 2);
-	Button turnLeftButton = new JoystickButton(leftDriveStick, 3);
-	Button turnRightButton = new JoystickButton(rightDriveStick, 4);
+	Button turnButton = new JoystickButton(leftDriveStick, 2);
+	Button aimButton = new JoystickButton(leftDriveStick, 3);
+	Button seekButton = new JoystickButton(leftDriveStick, 4);
+	Button followButton = new JoystickButton(leftDriveStick, 5);
+	Button camButton = new JoystickButton(rightDriveStick, 3);
+	Button ledButton = new JoystickButton(rightDriveStick, 4);
 
 	public OI() {
-		driveButton.whenReleased(new DriveToDistance(1, true));
-		driveBackButton.whenReleased(new DriveToDistance(-1, true));
-		turnLeftButton.whenReleased(new TurnToAngle(-90));
-		turnRightButton.whenReleased(new TurnToAngle(90));
+//		turnButton.whenReleased(new TeleopTurn(180));
+//		aimButton.whenReleased(new Aim());
+//		seekButton.whenReleased(new Seek());
+		followButton.whenReleased(new DriveToDistance(15, true));
+		camButton.whenReleased(new SwitchCameraMode());
+		ledButton.whenReleased(new SwitchLEDMode());
 	}
 }

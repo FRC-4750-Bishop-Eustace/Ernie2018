@@ -12,6 +12,8 @@ import org.usfirst.frc.team4750.robot.commands.IMUReset;
 import org.usfirst.frc.team4750.robot.commands.LeftAuton;
 import org.usfirst.frc.team4750.robot.commands.MiddleAuton;
 import org.usfirst.frc.team4750.robot.commands.RightAuton;
+import org.usfirst.frc.team4750.robot.commands.SwitchCameraMode;
+import org.usfirst.frc.team4750.robot.commands.SwitchLEDMode;
 import org.usfirst.frc.team4750.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team4750.robot.subsystems.Encoders;
 import org.usfirst.frc.team4750.robot.subsystems.IMU;
@@ -54,6 +56,10 @@ public class Robot extends TimedRobot {
 	// Reset commands
 	Command resetEncoders = new EncoderReset();
 	Command resetIMU = new IMUReset();
+	
+	// Limelight commands
+	Command led = new SwitchLEDMode();
+	Command cam = new SwitchCameraMode();
 
 	/**
 	 * This function is run when the robot is first started up and should be used
