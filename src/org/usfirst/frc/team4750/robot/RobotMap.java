@@ -18,6 +18,7 @@ public class RobotMap {
 	// Joystick ports
 	public static final int LEFT_JOYSTICK_PORT = 0;
 	public static final int RIGHT_JOYSTICK_PORT = 1;
+	public static final int CONTROL_JOYSTICK_PORT = 2;
 
 	// Drive motor IDs
 	public static final int FRONT_LEFT_MOTOR_ID = 1;
@@ -26,6 +27,14 @@ public class RobotMap {
 	public static final int RIGHT_MOTOR_ID = 4;
 	public static final int BACK_LEFT_MOTOR_ID = 5;
 	public static final int BACK_RIGHT_MOTOR_ID = 6;
+	
+	// Grabber ports (PWM)
+	public static final int LEFT_ARM_MOTOR_PORT = 1;
+	public static final int RIGHT_ARM_MOTOR_PORT = 2;
+	public static final int ROTATE_PORT = 0;
+	
+	// Solenoid ports (PCM)
+	public static final int GRABBER_PISTON_PORT = 2;
 
 	// Digital (DIO) Ports
 	public static final int ULTRASONIC_TRIGGER = 1;

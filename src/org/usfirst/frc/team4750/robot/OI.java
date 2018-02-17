@@ -25,6 +25,7 @@ public class OI {
 	// Joysticks
 	public static Joystick leftDriveStick = new Joystick(RobotMap.LEFT_JOYSTICK_PORT);
 	public static Joystick rightDriveStick = new Joystick(RobotMap.RIGHT_JOYSTICK_PORT);
+	public static Joystick controlDriveStick = new Joystick(RobotMap.CONTROL_JOYSTICK_PORT);
 
 	// Buttons
 	Button turnButton = new JoystickButton(leftDriveStick, 2);
