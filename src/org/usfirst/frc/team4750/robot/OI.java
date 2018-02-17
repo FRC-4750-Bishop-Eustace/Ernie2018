@@ -8,6 +8,9 @@
 package org.usfirst.frc.team4750.robot;
 
 import org.usfirst.frc.team4750.robot.commands.DriveToDistance;
+import org.usfirst.frc.team4750.robot.commands.GoToHighPos;
+import org.usfirst.frc.team4750.robot.commands.GoToLowPos;
+import org.usfirst.frc.team4750.robot.commands.GoToMidPos;
 import org.usfirst.frc.team4750.robot.commands.ReleasePiston;
 import org.usfirst.frc.team4750.robot.commands.SwitchCameraMode;
 import org.usfirst.frc.team4750.robot.commands.SwitchElevatorMode;
@@ -38,6 +41,9 @@ public class OI {
 	Button ledButton = new JoystickButton(rightDriveStick, 4);
 	Button switchElevatorPiston = new JoystickButton(controlDriveStick, 1);
 	Button releasePistonButton = new JoystickButton(controlDriveStick, 2);
+	Button lowPosButton = new JoystickButton(controlDriveStick, 3);
+	Button midPosButton = new JoystickButton(controlDriveStick, 4);
+	Button highPosButton = new JoystickButton(controlDriveStick, 5);
 
 	public OI() {
 //		turnButton.whenReleased(new TeleopTurn(180));
@@ -48,5 +54,8 @@ public class OI {
 		ledButton.whenReleased(new SwitchLEDMode());
 		switchElevatorPiston.whenReleased(new SwitchElevatorMode());
 		releasePistonButton.whenReleased(new ReleasePiston());
+		lowPosButton.whenReleased(new GoToLowPos());
+		midPosButton.whenReleased(new GoToMidPos());
+		highPosButton.whenReleased(new GoToHighPos());
 	}
 }

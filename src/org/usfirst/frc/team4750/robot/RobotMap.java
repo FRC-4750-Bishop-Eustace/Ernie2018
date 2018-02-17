@@ -40,6 +40,9 @@ public class RobotMap {
 	public static final int LEFT_ENCODER_B = 6;
 	public static final int RIGHT_ENCODER_A = 7;
 	public static final int RIGHT_ENCODER_B = 8;
+	public static final int LOW_POSITION_REED_PORT = 0;
+	public static final int MID_POSITION_REED_PORT = 1;
+	public static final int HIGH_POSITION_REED_PORT = 2;
 	
 	// Pneumatics ports (PCM)
 	public static final int ELEVATOR_PISTON_PORT = 0;
