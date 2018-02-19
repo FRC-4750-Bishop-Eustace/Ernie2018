@@ -4,6 +4,7 @@ import org.usfirst.frc.team4750.robot.OI;
 import org.usfirst.frc.team4750.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -23,8 +24,10 @@ public class RunElevator extends Command {
     protected void execute() {
     	if(Robot.elevator.getMode() == "Elevator") {
     		Robot.elevator.setElevatorSpeed(OI.controlDriveStick.getY());
+    		SmartDashboard.putString("Elevator Mode", "elevator");
     	}else {
     		Robot.elevator.setLifterSpeed(OI.controlDriveStick.getY());
+    		SmartDashboard.putString("Elevator Mode", "lifter");
     	}
     }
 

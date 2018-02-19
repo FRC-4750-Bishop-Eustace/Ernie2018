@@ -33,8 +33,8 @@ public class Elevator extends Subsystem {
 	DigitalInput midPos;
 	DigitalInput highPos;
 	
-	// Control mode, false = elevator, true = lifter
-	boolean mode = false;
+	// Control mode, true = elevator, false = lifter
+	boolean mode = true;
 	
 	// Elevator position, 0 = bottom, 1 = low, 2 = mid, 3 = high
 	int position = 0;
@@ -50,12 +50,12 @@ public class Elevator extends Subsystem {
 		
 		// Initialize pistons
 		elevatorPiston = new Solenoid(RobotMap.ELEVATOR_PISTON_PORT);
-		releasePiston = new Solenoid(RobotMap.RELEASE_PISTON_PORT);
+//		releasePiston = new Solenoid(RobotMap.RELEASE_PISTON_PORT);
 		
 		// Initialize reed switches
-		lowPos = new DigitalInput(RobotMap.LOW_POSITION_REED_PORT);
-		midPos = new DigitalInput(RobotMap.MID_POSITION_REED_PORT);
-		highPos = new DigitalInput(RobotMap.HIGH_POSITION_REED_PORT);
+//		lowPos = new DigitalInput(RobotMap.LOW_POSITION_REED_PORT);
+//		midPos = new DigitalInput(RobotMap.MID_POSITION_REED_PORT);
+//		highPos = new DigitalInput(RobotMap.HIGH_POSITION_REED_PORT);
 	}
 	
 	public void setElevatorSpeed(double speed) {
@@ -73,8 +73,10 @@ public class Elevator extends Subsystem {
 	public void switchElevatorPiston() {
 		if(!elevatorPiston.get()) {
 			elevatorPiston.set(true);
+			mode = true;
 		}else {
 			elevatorPiston.set(false);
+			mode = false;
 		}
 	}
 	
@@ -87,14 +89,6 @@ public class Elevator extends Subsystem {
 			return "Elevator";
 		}else {
 			return "Lifter";
-		}
-	}
-	
-	public void switchMode() {
-		if(!mode) {
-			mode = true;
-		}else {
-			mode = false;
 		}
 	}
 	

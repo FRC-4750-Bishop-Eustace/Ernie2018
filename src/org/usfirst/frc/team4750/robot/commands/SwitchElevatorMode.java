@@ -15,7 +15,6 @@ public class SwitchElevatorMode extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	Robot.elevator.switchElevatorPiston();
-    	Robot.elevator.switchMode();
     	isFinished = true;
     }
 
