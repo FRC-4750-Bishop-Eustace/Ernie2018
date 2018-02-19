@@ -23,7 +23,7 @@ public class OurRobotDrive extends DifferentialDrive {
 	}
 
 	private double cube(double value) {
-		return value * ((OI.rightDriveStick.getZ() - 1) / -2);
+		return value * .8;
 	}
 
 }

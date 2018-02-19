@@ -62,9 +62,9 @@ public class DriveToDistance extends Command {
 		// Reset encoders before driving
 		Robot.encoders.resetEncoders();
 		// Initialize PID controller // TODO Change to AveragePID
-		driveController = new PIDController(P, I, D, F, Robot.encoders.leftEncoder, Robot.driveTrain);
+		driveController = new PIDController(P, I, D, F, Robot.pidSource, Robot.driveTrain);
 		// Max motor speed
-		driveController.setOutputRange(-0.6, 0.6); // 0.6
+		driveController.setOutputRange(-0.5, 0.5); // 0.6
 		// Max error
 		driveController.setAbsoluteTolerance(tolerance);
 		// Set PID to turn to setpoint
@@ -72,7 +72,7 @@ public class DriveToDistance extends Command {
 		// Enable PID controller
 		driveController.enable();
 
-		// System.out.println("DriveToDistance(): Initialize ran!");
+		System.out.println("DriveToDistance(): Initialize ran!");
 	}
 
 	// Called repeatedly when this Command is scheduled to run

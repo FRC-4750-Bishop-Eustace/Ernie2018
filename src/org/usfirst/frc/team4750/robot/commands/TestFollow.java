@@ -12,42 +12,54 @@ public class TestFollow extends Command {
 	boolean isFinished;
 	double yOffset;
 	double xOffset;
-	
-    public TestFollow() {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-    }
+	double turnAdjust;
+	double driveAdjust;
+	double leftSpeed;
+	double rightSpeed;
 
-    // Called just before this Command runs the first time
-    protected void initialize() {
-    }
+	public TestFollow() {
+		// Use requires() here to declare subsystem dependencies
+		// eg. requires(chassis);
+	}
 
-    // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
-    	yOffset = Robot.limelight.getYOffset();
-    	xOffset = Robot.limelight.getXOffset();
-    		if(yOffset > 0.2) {
-    			Robot.driveTrain.setDriveSpeed(.4 * yOffset);
-    		}else if(yOffset < -0.2) {
-    			Robot.driveTrain.setDriveSpeed(.4 * yOffset);
-    		}
-//    		}else {
-//    			isFinished = true;
-//    		}
-    	
-    }
+	// Called just before this Command runs the first time
+	protected void initialize() {
+	}
 
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-        return isFinished;
-    }
+	// Called repeatedly when this Command is scheduled to run
+	protected void execute() {
+		yOffset = -Robot.limelight.getYOffset();
+		xOffset = -Robot.limelight.getXOffset();
+		turnAdjust = .08 * xOffset;
 
-    // Called once after isFinished returns true
-    protected void end() {
-    }
+		if (xOffset > 0.2) {
+			turnAdjust += .095;
+		} else if (xOffset < -0.2) {
+			turnAdjust -= .095;
+		}
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
-    }
+		driveAdjust = .3 * yOffset;
+
+		leftSpeed = driveAdjust - turnAdjust;
+		rightSpeed = driveAdjust + turnAdjust;
+
+		System.out.println("yOffset: " + yOffset + "    xOffset: " + xOffset + "     turnAdjust: " + turnAdjust
+				+ "     driveAdjust: " + driveAdjust + "     leftSpeed: " + leftSpeed + "     rightSpeed: "
+				+ rightSpeed);
+		Robot.driveTrain.tankDrive(leftSpeed, rightSpeed);
+	}
+
+	// Make this return true when this Command no longer needs to run execute()
+	protected boolean isFinished() {
+		return false;
+	}
+
+	// Called once after isFinished returns true
+	protected void end() {
+	}
+
+	// Called when another command which requires one or more of the same
+	// subsystems is scheduled to run
+	protected void interrupted() {
+	}
 }

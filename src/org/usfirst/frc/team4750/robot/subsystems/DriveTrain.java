@@ -65,14 +65,6 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 		backLeftMotor = new WPI_TalonSRX(backLeftMotorPort);
 		backRightMotor = new WPI_TalonSRX(backRightMotorPort);
 
-		// Configure velocity ramping
-		frontLeftMotor.configOpenloopRamp(ramp, rampTimeout);
-		frontRightMotor.configOpenloopRamp(ramp, rampTimeout);
-		leftMotor.configOpenloopRamp(ramp, rampTimeout);
-		rightMotor.configOpenloopRamp(ramp, rampTimeout);
-		backLeftMotor.configOpenloopRamp(ramp, rampTimeout);
-		backRightMotor.configOpenloopRamp(ramp, rampTimeout);
-
 		// Initialize controller groups
 		leftMotors = new SpeedControllerGroup(frontLeftMotor, leftMotor, backLeftMotor);
 		rightMotors = new SpeedControllerGroup(frontRightMotor, rightMotor, backRightMotor);
@@ -86,18 +78,12 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 
 	// Dual joystick drive
 	public void dualDrive(Joystick l, Joystick r) {
-		if (syncController.isEnabled()) {
-			syncController.disable();
-		}
 		// Set motor speeds to the joystick values (inverted)
 		robotDrive.tankDrive(-l.getY(), -r.getY());
 	}
 
 	// Single joystick drive
 	public void singleDrive(Joystick j) {
-		if (syncController.isEnabled()) {
-			syncController.disable();
-		}
 		// Set motor speeds to the joystick values (inverted)
 		// Y-axis = forward/backward speed
 		// Throttle (twist on joystick) = rotate speed
@@ -118,6 +104,10 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 			syncController.disable();
 		}
 		robotDrive.arcadeDrive(speed, 0);
+	}
+	
+	public void tankDrive(double leftSpeed, double rightSpeed) {
+		robotDrive.tankDrive(leftSpeed, rightSpeed);
 	}
 	
 	// Turn with PID
