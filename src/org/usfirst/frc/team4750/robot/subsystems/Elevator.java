@@ -33,9 +33,6 @@ public class Elevator extends Subsystem {
 	DigitalInput midPos;
 	DigitalInput highPos;
 	
-	// Control mode, true = elevator, false = lifter
-	boolean mode = true;
-	
 	// Elevator position, 0 = bottom, 1 = low, 2 = mid, 3 = high
 	int position = 0;
 	
@@ -73,10 +70,8 @@ public class Elevator extends Subsystem {
 	public void switchElevatorPiston() {
 		if(!elevatorPiston.get()) {
 			elevatorPiston.set(true);
-			mode = true;
 		}else {
 			elevatorPiston.set(false);
-			mode = false;
 		}
 	}
 	
@@ -85,7 +80,7 @@ public class Elevator extends Subsystem {
 	}
 	
 	public String getMode() {
-		if(!mode) {
+		if(elevatorPiston.get()) {
 			return "Elevator";
 		}else {
 			return "Lifter";
