@@ -63,6 +63,10 @@ public class Elevator extends Subsystem {
 		elevator.set(0);
 	}
 	
+	public void stopLifter() {
+		lifter.set(0);
+	}
+	
 	public void setLifterSpeed(double speed) {
 		lifter.set(speed);
 	}

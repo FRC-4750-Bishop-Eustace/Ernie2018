@@ -23,9 +23,11 @@ public class RunElevator extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	if(Robot.elevator.getMode() == "Elevator") {
+    		Robot.elevator.stopLifter();
     		Robot.elevator.setElevatorSpeed(OI.controlDriveStick.getY());
     		SmartDashboard.putString("Elevator Mode", "elevator");
     	}else {
+    		Robot.elevator.stopElevator();
     		Robot.elevator.setLifterSpeed(OI.controlDriveStick.getY());
     		SmartDashboard.putString("Elevator Mode", "lifter");
     	}
