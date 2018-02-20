@@ -21,7 +21,7 @@ public class RunGrabber extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.grabber.armDrive(OI.controlDriveStick.getThrottle(), OI.controlDriveStick.getX());
+    	Robot.grabber.armDrive(OI.controlDriveStick.getY(), OI.controlDriveStick.getX());
     }
 
     // Make this return true when this Command no longer needs to run execute()

@@ -34,7 +34,7 @@ public class RobotMap {
 	public static final int ROTATE_PORT = 0;
 	
 	// Solenoid ports (PCM)
-	public static final int GRABBER_PISTON_PORT = 2;
+	public static final int GRABBER_PISTON_PORT = 1;
 
 	// Digital (DIO) Ports
 	public static final int ULTRASONIC_TRIGGER = 1;

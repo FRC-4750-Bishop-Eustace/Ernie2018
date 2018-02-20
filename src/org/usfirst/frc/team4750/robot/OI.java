@@ -9,6 +9,7 @@ package org.usfirst.frc.team4750.robot;
 
 import org.usfirst.frc.team4750.robot.commands.DriveToDistance;
 import org.usfirst.frc.team4750.robot.commands.SwitchCameraMode;
+import org.usfirst.frc.team4750.robot.commands.SwitchGrabberPistons;
 import org.usfirst.frc.team4750.robot.commands.SwitchLEDMode;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -34,6 +35,7 @@ public class OI {
 	Button followButton = new JoystickButton(leftDriveStick, 5);
 	Button camButton = new JoystickButton(rightDriveStick, 3);
 	Button ledButton = new JoystickButton(rightDriveStick, 4);
+	Button switchButton = new JoystickButton(controlDriveStick, 2);
 
 	public OI() {
 //		turnButton.whenReleased(new TeleopTurn(180));
@@ -42,5 +44,6 @@ public class OI {
 		followButton.whenReleased(new DriveToDistance(15, true));
 		camButton.whenReleased(new SwitchCameraMode());
 		ledButton.whenReleased(new SwitchLEDMode());
+		switchButton.whenReleased(new SwitchGrabberPistons());
 	}
 }
