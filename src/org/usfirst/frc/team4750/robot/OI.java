@@ -45,6 +45,7 @@ public class OI {
 	Button lowPosButton = new JoystickButton(controlDriveStick, 3);
 	Button midPosButton = new JoystickButton(controlDriveStick, 4);
 	Button highPosButton = new JoystickButton(controlDriveStick, 5);
+	Button switchButton = new JoystickButton(controlDriveStick, 2);
 
 	public OI() {
 		turnButton.whenReleased(new TurnToAngle(-90));

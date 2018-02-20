@@ -32,6 +32,14 @@ public class RobotMap {
 	public static final int LEFT_ELEVATOR_MOTOR_PORT = 3;
 	public static final int RIGHT_ELEVATOR_MOTOR_PORT = 4;
 	public static final int LIFTER_MOTOR_ID = 7;
+	
+	// Grabber ports (PWM)
+	public static final int LEFT_ARM_MOTOR_PORT = 1;
+	public static final int RIGHT_ARM_MOTOR_PORT = 2;
+	public static final int ROTATE_PORT = 0;
+	
+	// Solenoid ports (PCM)
+	public static final int GRABBER_PISTON_PORT = 1;
 
 	// Digital (DIO) Ports
 	public static final int ULTRASONIC_TRIGGER = 1;

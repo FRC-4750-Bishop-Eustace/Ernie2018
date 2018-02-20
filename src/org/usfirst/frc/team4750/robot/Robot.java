@@ -17,6 +17,7 @@ import org.usfirst.frc.team4750.robot.commands.SwitchLEDMode;
 import org.usfirst.frc.team4750.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team4750.robot.subsystems.Elevator;
 import org.usfirst.frc.team4750.robot.subsystems.Encoders;
+import org.usfirst.frc.team4750.robot.subsystems.Grabber;
 import org.usfirst.frc.team4750.robot.subsystems.IMU;
 import org.usfirst.frc.team4750.robot.subsystems.Limelight;
 import org.usfirst.frc.team4750.robot.subsystems.Ultrasonics;
@@ -48,6 +49,7 @@ public class Robot extends TimedRobot {
 	public static final Limelight limelight = new Limelight();
 	public static final Encoders encoders = new Encoders();
 	public static final Elevator elevator = new Elevator();
+	public static final Grabber grabber = new Grabber();
 	public static OI oi;
 
 	// Autonomous commands
