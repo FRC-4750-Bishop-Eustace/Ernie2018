@@ -7,17 +7,13 @@
 
 package org.usfirst.frc.team4750.robot;
 
-import org.usfirst.frc.team4750.robot.commands.EncoderReset;
-import org.usfirst.frc.team4750.robot.commands.IMUReset;
 import org.usfirst.frc.team4750.robot.commands.LeftAuton;
 import org.usfirst.frc.team4750.robot.commands.MiddleAuton;
+import org.usfirst.frc.team4750.robot.commands.Output;
+import org.usfirst.frc.team4750.robot.commands.Reset;
 import org.usfirst.frc.team4750.robot.commands.RightAuton;
-import org.usfirst.frc.team4750.robot.commands.SwitchCameraMode;
-import org.usfirst.frc.team4750.robot.commands.SwitchLEDMode;
 import org.usfirst.frc.team4750.robot.subsystems.DriveTrain;
-import org.usfirst.frc.team4750.robot.subsystems.Elevator;
 import org.usfirst.frc.team4750.robot.subsystems.Encoders;
-import org.usfirst.frc.team4750.robot.subsystems.Grabber;
 import org.usfirst.frc.team4750.robot.subsystems.IMU;
 import org.usfirst.frc.team4750.robot.subsystems.Limelight;
 import org.usfirst.frc.team4750.robot.subsystems.Ultrasonics;
@@ -48,22 +44,18 @@ public class Robot extends TimedRobot {
 	public static final Ultrasonics ultrasonic = new Ultrasonics();
 	public static final Limelight limelight = new Limelight();
 	public static final Encoders encoders = new Encoders();
-	public static final Elevator elevator = new Elevator();
-	public static final Grabber grabber = new Grabber();
 	public static OI oi;
 
 	// Autonomous commands
 	String gameData;
 	Command autonomousCommand;
 	SendableChooser<String> chooser = new SendableChooser<>();
-
-	// Reset commands
-	Command resetEncoders = new EncoderReset();
-	Command resetIMU = new IMUReset();
 	
-	// Limelight commands
-	Command led = new SwitchLEDMode();
-	Command cam = new SwitchCameraMode();
+	// Sensor output command
+	Command output = new Output();
+
+	// Reset command
+	Command reset = new Reset();
 
 	/**
 	 * This function is run when the robot is first started up and should be used
@@ -78,11 +70,12 @@ public class Robot extends TimedRobot {
 		chooser.addObject("Right", "R");
 		SmartDashboard.putData("Auto mode", chooser);
 
-		// Reset commands
-		resetEncoders.start();
-		resetIMU.start();
-		SmartDashboard.putData("Reset Encoders", resetEncoders);
-		SmartDashboard.putData("Reset IMU", resetIMU);
+		// Reset command
+		reset.start();
+		SmartDashboard.putData("Reset", reset);
+		
+		// Start output to smart dashboard
+		output.start();
 	}
 
 	/**

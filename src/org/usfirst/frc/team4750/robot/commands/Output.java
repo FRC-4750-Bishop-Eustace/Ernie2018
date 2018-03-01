@@ -1,36 +1,36 @@
 package org.usfirst.frc.team4750.robot.commands;
 
-import org.usfirst.frc.team4750.robot.OI;
 import org.usfirst.frc.team4750.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- *
+ * This command handles all sensor outputs to the smart dashboard
+ * 
  */
-public class RunElevator extends Command {
-
-    public RunElevator() {
-        requires(Robot.elevator);
+public class Output extends Command {
+	
+    public Output() {
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	requires(Robot.elevator);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	if(Robot.elevator.getMode() == "Elevator") {
-    		Robot.elevator.stopLifter();
-    		Robot.elevator.setElevatorSpeed(OI.controlDriveStick.getY());
-    		SmartDashboard.putString("Elevator Mode", "elevator");
-    	}else {
-    		Robot.elevator.stopElevator();
-    		Robot.elevator.setLifterSpeed(OI.controlDriveStick.getY());
-    		SmartDashboard.putString("Elevator Mode", "lifter");
-    	}
+		// Output movement in inches
+		SmartDashboard.putNumber("Left Encoder Distance (inches)", Robot.encoders.getLeftDistanceInches());
+		SmartDashboard.putNumber("Right Encoder Distance (inches)", Robot.encoders.getRightDistanceInches());
+		
+		// Output current heading to dashboard
+		SmartDashboard.putNumber("IMU", Robot.imu.getHeading());
+		
+		// Output range in inches to dashboard
+		SmartDashboard.putNumber("Range (inches)", Robot.ultrasonic.getInches());
+		// Output range in feet to dashboard
+		SmartDashboard.putNumber("Range (feet)", Robot.ultrasonic.getFeet());
     }
 
     // Make this return true when this Command no longer needs to run execute()

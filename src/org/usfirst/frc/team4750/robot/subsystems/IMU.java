@@ -1,7 +1,5 @@
 package org.usfirst.frc.team4750.robot.subsystems;
 
-import org.usfirst.frc.team4750.robot.commands.IMUOutput;
-
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.PIDSource;
@@ -47,8 +45,6 @@ public class IMU extends Subsystem implements PIDSource {
 	}
 	
 	public void initDefaultCommand() {
-		// Call output command
-		setDefaultCommand(new IMUOutput());
 	}
 
 	/**

@@ -7,15 +7,29 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class SwitchLEDMode extends Command {
-
+public class Reset extends Command {
+	
 	// Check if finished
 	boolean isFinished = false;
 
+    public Reset() {
+        // Use requires() here to declare subsystem dependencies
+        // eg. requires(chassis);
+    }
+
+    // Called just before this Command runs the first time
+    protected void initialize() {
+    }
+
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.limelight.switchLED();
-    	isFinished = true;
+		// Resets the imu
+		Robot.imu.reset();
+		
+		// Resets the encoders
+		Robot.encoders.reset();
+		
+		isFinished = true;
     }
 
     // Make this return true when this Command no longer needs to run execute()

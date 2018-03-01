@@ -7,13 +7,9 @@
 
 package org.usfirst.frc.team4750.robot;
 
-import org.usfirst.frc.team4750.robot.commands.GoToHighPos;
-import org.usfirst.frc.team4750.robot.commands.GoToLowPos;
-import org.usfirst.frc.team4750.robot.commands.GoToMidPos;
-import org.usfirst.frc.team4750.robot.commands.ReleasePiston;
-import org.usfirst.frc.team4750.robot.commands.SwitchCameraMode;
-import org.usfirst.frc.team4750.robot.commands.SwitchElevatorMode;
-import org.usfirst.frc.team4750.robot.commands.SwitchLEDMode;
+import org.usfirst.frc.team4750.robot.commands.Aim;
+import org.usfirst.frc.team4750.robot.commands.DriveToDistance;
+import org.usfirst.frc.team4750.robot.commands.Seek;
 import org.usfirst.frc.team4750.robot.commands.TestFollow;
 import org.usfirst.frc.team4750.robot.commands.TurnToAngle;
 
@@ -34,30 +30,17 @@ public class OI {
 	public static Joystick controlDriveStick = new Joystick(RobotMap.CONTROL_JOYSTICK_PORT);
 
 	// Buttons
-	Button turnButton = new JoystickButton(rightDriveStick, 2);
+	Button turnButton = new JoystickButton(rightDriveStick, 3);
+	Button driveButton = new JoystickButton(rightDriveStick, 4);
 	Button aimButton = new JoystickButton(leftDriveStick, 3);
 	Button seekButton = new JoystickButton(leftDriveStick, 4);
 	Button followButton = new JoystickButton(leftDriveStick, 5);
-	Button camButton = new JoystickButton(rightDriveStick, 3);
-	Button ledButton = new JoystickButton(rightDriveStick, 4);
-	Button switchElevatorPiston = new JoystickButton(controlDriveStick, 1);
-	Button releasePistonButton = new JoystickButton(controlDriveStick, 2);
-	Button lowPosButton = new JoystickButton(controlDriveStick, 3);
-	Button midPosButton = new JoystickButton(controlDriveStick, 4);
-	Button highPosButton = new JoystickButton(controlDriveStick, 5);
-	Button switchButton = new JoystickButton(controlDriveStick, 2);
 
 	public OI() {
-		turnButton.whenReleased(new TurnToAngle(-90));
-//		aimButton.whenReleased(new Aim());
-//		seekButton.whenReleased(new Seek());
+		turnButton.whenReleased(new TurnToAngle(90));
+		driveButton.whenReleased(new DriveToDistance(4, true));
+		aimButton.whenReleased(new Aim());
+		seekButton.whenReleased(new Seek());
 		followButton.whenReleased(new TestFollow());
-		camButton.whenReleased(new SwitchCameraMode());
-		ledButton.whenReleased(new SwitchLEDMode());
-		switchElevatorPiston.whenReleased(new SwitchElevatorMode());
-		releasePistonButton.whenReleased(new ReleasePiston());
-		lowPosButton.whenReleased(new GoToLowPos());
-		midPosButton.whenReleased(new GoToMidPos());
-		highPosButton.whenReleased(new GoToHighPos());
 	}
 }

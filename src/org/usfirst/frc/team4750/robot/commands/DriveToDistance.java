@@ -60,11 +60,11 @@ public class DriveToDistance extends Command {
 	// Called just before this Command runs the first time
 	protected void initialize() {
 		// Reset encoders before driving
-		Robot.encoders.resetEncoders();
+		Robot.encoders.reset();
 		// Initialize PID controller // TODO Change to AveragePID
-		driveController = new PIDController(P, I, D, F, Robot.pidSource, Robot.driveTrain);
+		driveController = new PIDController(P, I, D, F, Robot.encoders.rightEncoder, Robot.driveTrain);
 		// Max motor speed
-		driveController.setOutputRange(-0.5, 0.5); // 0.6
+		driveController.setOutputRange(-0.7, 0.7); // 0.6
 		// Max error
 		driveController.setAbsoluteTolerance(tolerance);
 		// Set PID to turn to setpoint
@@ -86,7 +86,7 @@ public class DriveToDistance extends Command {
 		// If the error is less than the tolerance, wait to make sure we aren't still
 		// moving, then finish
 		if (Math.abs(driveController.getError()) < tolerance) {
-			Timer.delay(.05);
+			Timer.delay(.1);
 			SmartDashboard.putNumber("DriveToDistance Error", driveController.getError());
 			if (Math.abs(driveController.getError()) < tolerance) {
 				isFinished = true;
@@ -120,7 +120,7 @@ public class DriveToDistance extends Command {
 		Robot.driveTrain.brake();
 		// Disable PID controller
 		driveController.disable();
-		// System.out.println("DriveToDistance(): Should be at target!");
+		System.out.println("DriveToDistance(): Should be at target!");
 	}
 
 	// Called when another command which requires one or more of the same
@@ -128,6 +128,6 @@ public class DriveToDistance extends Command {
 	protected void interrupted() {
 		// Disable PID controller
 		driveController.disable();
-		// System.out.println("DriveToDistance(): Interrupted ran!");
+		System.out.println("DriveToDistance(): Interrupted ran!");
 	}
 }

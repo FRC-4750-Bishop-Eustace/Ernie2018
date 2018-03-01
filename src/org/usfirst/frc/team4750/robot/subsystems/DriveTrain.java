@@ -71,6 +71,8 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 
 		// Initialize robot drive
 		robotDrive = new OurRobotDrive(leftMotors, rightMotors);
+		
+		robotDrive.setSafetyEnabled(false);
 
 		// Initialize PID controller
 		syncController = new PIDController(P, I, D, F, Robot.imu.ahrs, Robot.relay);

@@ -1,7 +1,6 @@
 package org.usfirst.frc.team4750.robot.subsystems;
 
 import org.usfirst.frc.team4750.robot.RobotMap;
-import org.usfirst.frc.team4750.robot.commands.EncoderOutput;
 
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.Encoder;
@@ -85,14 +84,12 @@ public class Encoders extends Subsystem implements PIDSource {
 		rightEncoder.reset();
 	}
 
-	public void resetEncoders() {
+	public void reset() {
 		leftEncoder.reset();
 		rightEncoder.reset();
 	}
 
 	public void initDefaultCommand() {
-		// Call output command
-		setDefaultCommand(new EncoderOutput());
 	}
 
 	/**

@@ -1,7 +1,6 @@
 package org.usfirst.frc.team4750.robot.subsystems;
 
 import org.usfirst.frc.team4750.robot.RobotMap;
-import org.usfirst.frc.team4750.robot.commands.UltrasonicOutput;
 
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -41,7 +40,5 @@ public class Ultrasonics extends Subsystem {
 	}
 
 	public void initDefaultCommand() {
-		// Call output command
-		setDefaultCommand(new UltrasonicOutput());
 	}
 }
